@@ -40,6 +40,8 @@ function corsOptionsDelegate(req, callback) {
 
       if (originHost === hostHeader) {
         isAllowed = true;
+      } else if (originHost.endsWith('.onrender.com')) {
+        isAllowed = true;
       } else if (process.env.CORS_ORIGIN) {
         const allowedClean = process.env.CORS_ORIGIN.replace(/^https?:\/\//, '').replace(/\/$/, '');
         if (originHost === allowedClean) isAllowed = true;
@@ -105,7 +107,7 @@ app.use(errorHandler);
 
 if (require.main === module) {
   const PORT = process.env.PORT || 5002;
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`PlanCraft AI Server running on port ${PORT}`);
   });
 }
