@@ -1,0 +1,96 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Event {
+  id                String             @id @default(cuid())
+  sessionId         String
+  name              String
+  eventType         String             // "WEDDING" | "BIRTHDAY" | "COMMUNITY" | "OTHER"
+  targetDate        String?
+  guestCount        Int                @default(50)
+  totalBudget       Float              @default(5000.0)
+  currency          String             @default("USD")
+  location          String?
+  vibe              String?
+  notes             String?
+  aiThemeConcept    String?
+  aiOverview        String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  budgetItems       BudgetItem[]
+  timelineItems     TimelineItem[]
+  vendorItems       VendorItem[]
+  personalizedIdeas PersonalizedIdea[]
+  consultations     AiConsultation[]
+
+  @@index([sessionId])
+}
+
+model BudgetItem {
+  id            String   @id @default(cuid())
+  eventId       String
+  event         Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  category      String   // "VENUE" | "CATERING" | "DECOR" | "ENTERTAINMENT" | "MEDIA" | "LOGISTICS" | "CONTINGENCY" | "OTHER"
+  title         String
+  estimatedCost Float    @default(0.0)
+  actualCost    Float    @default(0.0)
+  isPaid        Boolean  @default(false)
+  notes         String?
+  createdAt     DateTime @default(now())
+}
+
+model TimelineItem {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  phase       String   // "EARLY_PLANNING" | "MID_PLANNING" | "FINAL_PREP" | "DAY_OF" | "POST_EVENT"
+  title       String
+  targetDate  String?
+  time        String?  // e.g. "14:00" for day-of runs
+  isCompleted Boolean  @default(false)
+  notes       String?
+  orderIndex  Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model VendorItem {
+  id              String   @id @default(cuid())
+  eventId         String
+  event           Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  category        String   // "VENUE" | "CATERING" | "PHOTOGRAPHY" | "MUSIC" | "FLORIST" | "RENTALS" | "OFFICIANT" | "SECURITY" | "OTHER"
+  vendorName      String
+  contactInfo     String?
+  status          String   @default("NOT_CONTACTED") // "NOT_CONTACTED" | "INQUIRED" | "SHORTLISTED" | "BOOKED" | "CONFIRMED"
+  quotedPrice     Float?
+  notes           String?
+  aiScreeningTips String?
+  createdAt       DateTime @default(now())
+}
+
+model PersonalizedIdea {
+  id          String   @id @default(cuid())
+  eventId     String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  category    String   // "THEME_DECOR" | "FOOD_BEVERAGE" | "ENTERTAINMENT" | "GIFT_FAVOR" | "LOGISTICS"
+  title       String
+  description String
+  costTier    String   @default("MEDIUM") // "LOW" | "MEDIUM" | "HIGH"
+  isSaved     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model AiConsultation {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  query     String
+  reply     String
+  createdAt DateTime @default(now())
+}

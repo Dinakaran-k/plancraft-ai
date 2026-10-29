@@ -1,0 +1,34 @@
+{
+  "name": "plancraft-ai",
+  "version": "1.0.0",
+  "description": "PlanCraft AI — GenAI-Powered Planning Assistant for Weddings, Birthdays, and Community Events",
+  "main": "server/app.js",
+  "scripts": {
+    "install:all": "npm install && npm install --prefix server && npm install --prefix client",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "build:client": "npm run build --prefix client",
+    "test:server": "npm run test --prefix server",
+    "test:client": "npm run test --prefix client",
+    "test": "npm run test:server && npm run test:client",
+    "build": "npm run install:all && npm run build:client",
+    "start": "npm run start --prefix server"
+  },
+  "keywords": [
+    "genai",
+    "gemini",
+    "event-planning",
+    "weddings",
+    "birthdays",
+    "community-events",
+    "budgets",
+    "timelines",
+    "vendors"
+  ],
+  "author": "Dinakaran Kommunuri",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
