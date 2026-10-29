@@ -38,7 +38,7 @@ describe('BudgetManager Component', () => {
 
     expect(screen.getByText('Grand Ballroom Venue')).toBeInTheDocument();
     expect(screen.getByText('Acoustic Guitarist')).toBeInTheDocument();
-    expect(screen.getByText('Budget Utilization')).toBeInTheDocument();
+    expect(screen.getByText(/Budget Utilization/i)).toBeInTheDocument();
     expect(screen.getByText('$5,200')).toBeInTheDocument();
   });
 

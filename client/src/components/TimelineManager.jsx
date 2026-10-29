@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Clock, Plus, Trash2, CheckCircle2, Circle, Calendar, Flag, Sparkles } from 'lucide-react';
+import { Clock, Plus, Trash2, CheckCircle2, Circle, Calendar, Flag, Sparkles, Edit2, X, Check, Milestone } from 'lucide-react';
 
 const PHASES = [
   { id: 'ALL', label: 'All Milestones' },
@@ -15,14 +15,23 @@ export default function TimelineManager({
   summary,
   onToggleComplete,
   onAddItem,
+  onUpdateItem,
   onDeleteItem
 }) {
   const [selectedPhase, setSelectedPhase] = useState('ALL');
   const [isAdding, setIsAdding] = useState(false);
+  const [editingItemId, setEditingItemId] = useState(null);
+
+  // Add form states
   const [title, setTitle] = useState('');
   const [phase, setPhase] = useState('EARLY_PLANNING');
   const [time, setTime] = useState('');
   const [notes, setNotes] = useState('');
+
+  // Edit form states
+  const [editTitle, setEditTitle] = useState('');
+  const [editTime, setEditTime] = useState('');
+  const [editNotes, setEditNotes] = useState('');
 
   const items = event.timelineItems || [];
   const filteredItems = selectedPhase === 'ALL'
@@ -49,10 +58,28 @@ export default function TimelineManager({
     setIsAdding(false);
   };
 
+  const startEdit = (item) => {
+    setEditingItemId(item.id);
+    setEditTitle(item.title);
+    setEditTime(item.time || '');
+    setEditNotes(item.notes || '');
+  };
+
+  const saveEdit = (id) => {
+    if (onUpdateItem) {
+      onUpdateItem(id, {
+        title: editTitle.trim(),
+        time: editTime.trim() || null,
+        notes: editNotes.trim() || null
+      });
+    }
+    setEditingItemId(null);
+  };
+
   const getPhaseColor = (p) => {
     switch (p) {
       case 'EARLY_PLANNING': return 'bg-sky-50 text-sky-700 border-sky-200';
-      case 'MID_PLANNING': return 'bg-indigo-50 text-indigo-700 border-indigo-200';
+      case 'MID_PLANNING': return 'bg-indigoBrand-50 text-indigoBrand-700 border-indigoBrand-200';
       case 'FINAL_PREP': return 'bg-amber-50 text-amber-700 border-amber-200';
       case 'DAY_OF': return 'bg-emerald-50 text-emerald-700 border-emerald-200';
       case 'POST_EVENT': return 'bg-purple-50 text-purple-700 border-purple-200';
@@ -60,12 +87,22 @@ export default function TimelineManager({
     }
   };
 
+  // Compute tasks per phase for visual phase indicators
+  const phaseStats = PHASES.filter((p) => p.id !== 'ALL').map((p) => {
+    const total = items.filter((i) => i.phase === p.id).length;
+    const done = items.filter((i) => i.phase === p.id && i.isCompleted).length;
+    return { ...p, total, done };
+  });
+
   return (
     <div className="space-y-6">
       {/* Timeline Progress Header */}
       <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-base font-bold text-slate-900">Milestone Schedule & Run-of-Show</h2>
+          <h2 className="text-base font-bold text-slate-900 flex items-center space-x-2">
+            <Milestone className="w-4 h-4 text-brand-600" />
+            <span>Milestone Schedule & Run-of-Show</span>
+          </h2>
           <p className="text-xs text-slate-500 mt-0.5">
             {completedCount} of {items.length} milestones completed ({percentComplete}%)
           </p>
@@ -77,6 +114,28 @@ export default function TimelineManager({
             style={{ width: `${percentComplete}%` }}
           />
         </div>
+      </div>
+
+      {/* Visual Phase Pipeline Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+        {phaseStats.map((st) => (
+          <button
+            key={st.id}
+            onClick={() => setSelectedPhase(selectedPhase === st.id ? 'ALL' : st.id)}
+            className={`p-3 rounded-xl border text-left transition-all ${
+              selectedPhase === st.id
+                ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
+                : 'bg-white border-slate-200 hover:border-slate-300 text-slate-800'
+            }`}
+          >
+            <div className={`text-[10px] font-bold uppercase tracking-wider ${selectedPhase === st.id ? 'text-brand-400' : 'text-slate-500'}`}>
+              {st.label}
+            </div>
+            <div className="text-base font-bold mt-1">
+              {st.done}/{st.total} <span className="text-xs font-normal opacity-70">done</span>
+            </div>
+          </button>
+        ))}
       </div>
 
       {/* Phase Filter Tabs */}
@@ -97,7 +156,7 @@ export default function TimelineManager({
 
         <button
           onClick={() => setIsAdding(!isAdding)}
-          className="ml-auto inline-flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-50 text-brand-700 hover:bg-brand-100 border border-brand-200 whitespace-nowrap"
+          className="ml-auto inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-600 text-white hover:bg-brand-700 whitespace-nowrap shadow-sm"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Add Milestone</span>
@@ -106,7 +165,7 @@ export default function TimelineManager({
 
       {/* Add Form Dropdown */}
       {isAdding && (
-        <form onSubmit={handleCreate} className="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <form onSubmit={handleCreate} className="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fadeIn">
           <div className="sm:col-span-2">
             <label htmlFor="timeline-title" className="block text-xs font-semibold text-slate-600 mb-1">Milestone Action *</label>
             <input
@@ -179,57 +238,107 @@ export default function TimelineManager({
       {/* Timeline List */}
       <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm divide-y divide-slate-100 overflow-hidden">
         {filteredItems.length > 0 ? (
-          filteredItems.map((item) => (
-            <div
-              key={item.id}
-              className={`p-4 sm:p-5 flex items-start justify-between gap-4 transition-colors ${
-                item.isCompleted ? 'bg-slate-50/50' : 'hover:bg-slate-50/70'
-              }`}
-            >
-              <div className="flex items-start space-x-3.5">
-                <button
-                  onClick={() => onToggleComplete(item.id)}
-                  className="mt-0.5 text-slate-400 hover:text-brand-600 transition-colors focus:ring-2 focus:ring-brand-500 rounded"
-                  aria-label={item.isCompleted ? 'Mark milestone as pending' : 'Mark milestone as complete'}
-                >
-                  {item.isCompleted ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 fill-emerald-100" />
-                  ) : (
-                    <Circle className="w-5 h-5" />
-                  )}
-                </button>
+          filteredItems.map((item) => {
+            const isEditing = editingItemId === item.id;
 
-                <div>
-                  <div className="flex items-center space-x-2 flex-wrap gap-y-1">
-                    <span className={`text-sm font-semibold ${item.isCompleted ? 'line-through text-slate-400' : 'text-slate-900'}`}>
-                      {item.title}
-                    </span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getPhaseColor(item.phase)}`}>
-                      {item.phase.replace(/_/g, ' ')}
-                    </span>
-                    {item.time && (
-                      <span className="text-xs text-slate-500 inline-flex items-center space-x-1">
-                        <Clock className="w-3 h-3 text-slate-400" />
-                        <span>{item.time}</span>
+            if (isEditing) {
+              return (
+                <div key={item.id} className="p-4 bg-slate-50/90 flex flex-col sm:flex-row items-center gap-3">
+                  <input
+                    type="text"
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    className="flex-1 px-3 py-1.5 text-sm bg-white border border-slate-300 rounded-lg"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Time / Offset"
+                    value={editTime}
+                    onChange={(e) => setEditTime(e.target.value)}
+                    className="w-36 px-3 py-1.5 text-sm bg-white border border-slate-300 rounded-lg"
+                  />
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => saveEdit(item.id)}
+                      className="p-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700"
+                      title="Save"
+                    >
+                      <Check className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setEditingItemId(null)}
+                      className="p-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300"
+                      title="Cancel"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              );
+            }
+
+            return (
+              <div
+                key={item.id}
+                className={`p-4 sm:p-5 flex items-start justify-between gap-4 transition-colors ${
+                  item.isCompleted ? 'bg-slate-50/50' : 'hover:bg-slate-50/70'
+                }`}
+              >
+                <div className="flex items-start space-x-3.5">
+                  <button
+                    onClick={() => onToggleComplete(item.id)}
+                    className="mt-0.5 text-slate-400 hover:text-brand-600 transition-colors focus:ring-2 focus:ring-brand-500 rounded"
+                    aria-label={item.isCompleted ? 'Mark milestone as pending' : 'Mark milestone as complete'}
+                  >
+                    {item.isCompleted ? (
+                      <CheckCircle2 className="w-5 h-5 text-emerald-500 fill-emerald-100" />
+                    ) : (
+                      <Circle className="w-5 h-5" />
+                    )}
+                  </button>
+
+                  <div>
+                    <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+                      <span className={`text-sm font-semibold ${item.isCompleted ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                        {item.title}
                       </span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getPhaseColor(item.phase)}`}>
+                        {item.phase.replace(/_/g, ' ')}
+                      </span>
+                      {item.time && (
+                        <span className="text-xs text-slate-500 inline-flex items-center space-x-1">
+                          <Clock className="w-3 h-3 text-slate-400" />
+                          <span>{item.time}</span>
+                        </span>
+                      )}
+                    </div>
+
+                    {item.notes && (
+                      <p className="text-xs text-slate-500 mt-1 max-w-2xl">{item.notes}</p>
                     )}
                   </div>
+                </div>
 
-                  {item.notes && (
-                    <p className="text-xs text-slate-500 mt-1 max-w-2xl">{item.notes}</p>
-                  )}
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={() => startEdit(item)}
+                    className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
+                    aria-label={`Edit ${item.title}`}
+                  >
+                    <Edit2 className="w-3.5 h-3.5" />
+                  </button>
+
+                  <button
+                    onClick={() => onDeleteItem(item.id)}
+                    className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
+                    aria-label={`Delete milestone: ${item.title}`}
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
-
-              <button
-                onClick={() => onDeleteItem(item.id)}
-                className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
-                aria-label={`Delete milestone: ${item.title}`}
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
-            </div>
-          ))
+            );
+          })
         ) : (
           <div className="p-8 text-center text-slate-400 text-sm">
             No milestones found for this filter.

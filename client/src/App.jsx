@@ -132,6 +132,12 @@ export default function App() {
     await selectEvent(currentEvent.id);
   };
 
+  const handleUpdateTimelineItem = async (itemId, data) => {
+    if (!currentEvent) return;
+    await eventService.updateTimelineItem(itemId, data);
+    await selectEvent(currentEvent.id);
+  };
+
   const handleToggleTimeline = async (itemId) => {
     if (!currentEvent) return;
     await eventService.toggleTimeline(itemId);
@@ -237,6 +243,7 @@ export default function App() {
             onUpdateBudgetItem={handleUpdateBudgetItem}
             onDeleteBudgetItem={handleDeleteBudgetItem}
             onAddTimelineItem={handleAddTimelineItem}
+            onUpdateTimelineItem={handleUpdateTimelineItem}
             onToggleTimeline={handleToggleTimeline}
             onDeleteTimelineItem={handleDeleteTimelineItem}
             onAddVendor={handleAddVendor}

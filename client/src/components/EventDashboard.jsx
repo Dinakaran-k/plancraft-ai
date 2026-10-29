@@ -10,7 +10,8 @@ import {
   Trash2,
   ChevronRight,
   TrendingUp,
-  CheckCircle2
+  CheckCircle2,
+  Printer
 } from 'lucide-react';
 
 import BudgetManager from './BudgetManager';
@@ -34,6 +35,7 @@ export default function EventDashboard({
   onUpdateBudgetItem,
   onDeleteBudgetItem,
   onAddTimelineItem,
+  onUpdateTimelineItem,
   onToggleTimeline,
   onDeleteTimelineItem,
   onAddVendor,
@@ -57,10 +59,14 @@ export default function EventDashboard({
     }).format(val || 0);
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-6">
       {/* Event Overview Hero Banner */}
-      <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 print:border-none print:shadow-none">
         <div className="space-y-2">
           <div className="flex items-center space-x-2 flex-wrap gap-y-1">
             <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-700 border border-brand-200 uppercase tracking-wide">
@@ -92,7 +98,16 @@ export default function EventDashboard({
         </div>
 
         {/* Hero Quick Actions */}
-        <div className="flex items-center space-x-3 self-start md:self-auto">
+        <div className="flex items-center space-x-3 self-start md:self-auto print:hidden">
+          <button
+            onClick={handlePrint}
+            className="inline-flex items-center space-x-1.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-colors"
+            title="Print or Save PDF"
+          >
+            <Printer className="w-4 h-4" />
+            <span className="hidden sm:inline">Print Plan</span>
+          </button>
+
           <button
             onClick={onOpenCoPilot}
             className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-indigoBrand-600 to-indigoBrand-700 text-white shadow-md shadow-indigoBrand-500/20 hover:from-indigoBrand-700 hover:to-indigoBrand-800 transition-all"
@@ -116,7 +131,7 @@ export default function EventDashboard({
       </div>
 
       {/* Main Tab Bar Navigation */}
-      <div className="flex items-center space-x-2 border-b border-slate-200 pb-px overflow-x-auto">
+      <div className="flex items-center space-x-2 border-b border-slate-200 pb-px overflow-x-auto print:hidden">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -164,6 +179,7 @@ export default function EventDashboard({
             summary={summary}
             onToggleComplete={onToggleTimeline}
             onAddItem={onAddTimelineItem}
+            onUpdateItem={onUpdateTimelineItem}
             onDeleteItem={onDeleteTimelineItem}
           />
         )}
