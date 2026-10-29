@@ -17,8 +17,8 @@ This document contains pre-written, verified responses formatted to match the ch
 ---
 
 ### Field 3: Project Deployed Link
-> `https://<your-deployed-service>.onrender.com`
-*(Or Vercel / Railway URL)*
+> `https://plancraft-ai-v96f.onrender.com`
+*(Live production deployment on Render, connected to Neon PostgreSQL)*
 
 ---
 
