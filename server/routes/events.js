@@ -16,6 +16,9 @@ router.post('/generate-plan', aiGenerationLimiter, eventsController.generateEven
 // POST /api/events/:eventId/ai-consult - Hero interactive AI consult
 router.post('/:eventId/ai-consult', aiGenerationLimiter, aiController.consultAi);
 
+// POST /api/events/:eventId/more-ideas - Generate fresh bespoke ideas
+router.post('/:eventId/more-ideas', aiGenerationLimiter, aiController.generateMoreIdeas);
+
 // GET /api/events/:id - Get detailed event
 router.get('/:id', eventsController.getEventById);
 

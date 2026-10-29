@@ -32,18 +32,18 @@ This document contains pre-written, verified responses formatted to match the ch
 
 > Production release of PlanCraft AI:
 > 1. Engineered GenAI Event Blueprint Architect powered by Gemini 2.5 Flash, generating categorized budgets, phased timeline countdowns, vendor checklists, and bespoke creative concepts in a single transactional step.
-> 2. Implemented interactive AI Planning Co-Pilot (POST /api/events/:id/ai-consult) for contextual advice, rain contingencies, and budget tradeoff calculations.
-> 3. Added dynamic budget analytics (estimated vs actual variance, category allocation percentages, live utilization progress bars).
-> 4. Designed WCAG 2.1 AA/AAA accessible UI with screen reader announcer (aria-live), full keyboard navigation, and visible focus rings.
-> 5. Fortified with Helmet security headers, CORS origin allowlisting, and rate limiters.
-> 6. 36 passing automated tests (Jest, Supertest, Vitest).
+> 2. Implemented interactive AI Planning Co-Pilot (POST /api/events/:id/ai-consult) and Dynamic Idea Expansion (POST /api/events/:id/more-ideas) for real-time tradeoffs, contingencies, and fresh creative inspiration.
+> 3. Added dynamic budget analytics (estimated vs actual variance, category breakdown, CSV export) and Calendar milestone export (.ics for Google/Apple Calendar).
+> 4. Designed WCAG 2.1 AA/AAA accessible UI with screen reader announcer (aria-live), full keyboard navigation, event ambiance theming, and countdown badge.
+> 5. Fortified with Helmet security headers, CORS origin allowlisting, Neon PostgreSQL, and rate limiters.
+> 6. 37 passing automated tests (Jest, Supertest, Vitest).
 
 ---
 
 ### Field 6: Mention the Gen AI services utilized in the submission, and where did you utilize it?
 *(Limit: 1024 characters | Current count: ~840 chars)*
 
-> Google Gemini (gemini-2.5-flash via @google/generative-ai SDK) is utilized in two core capabilities:
+> Google Gemini (gemini-2.5-flash via @google/generative-ai SDK) is utilized in three core capabilities:
 > 
 > 1. Comprehensive Event Blueprint Generator (POST /api/events/generate-plan):
 > Invoked during event creation. Gemini synthesizes user inputs (event type: wedding/birthday/community, guest count, total budget, location, desired vibe) into a structured JSON plan comprising:
@@ -55,6 +55,9 @@ This document contains pre-written, verified responses formatted to match the ch
 > 
 > 2. Interactive AI Planning Co-Pilot (POST /api/events/:id/ai-consult):
 > Real-time contextual consultation assistant for budget cuts, menu suggestions, and contingencies.
+> 
+> 3. Dynamic Idea Expansion Engine (POST /api/events/:id/more-ideas):
+> On-demand brainstorming tool that considers existing event state to craft 3 fresh, bespoke experiences.
 
 ---
 

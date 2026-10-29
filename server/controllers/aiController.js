@@ -1,6 +1,6 @@
 const prisma = require('../services/prismaClient');
 const { validateAiConsultInput, sanitizeString } = require('../services/validatorService');
-const { consultAiCoPilot } = require('../services/geminiService');
+const { consultAiCoPilot, generateMoreIdeas } = require('../services/geminiService');
 
 /**
  * Hero Feature 2: Interactive AI Planning Co-Pilot
@@ -94,4 +94,45 @@ async function deletePersonalizedIdea(req, res, next) {
   }
 }
 
-module.exports = { consultAi, addPersonalizedIdea, deletePersonalizedIdea };
+async function generateMoreIdeasController(req, res, next) {
+  try {
+    const { eventId } = req.params;
+    const event = await prisma.event.findFirst({
+      where: { id: eventId, sessionId: req.sessionId },
+      include: { personalizedIdeas: true }
+    });
+    if (!event) return res.status(404).json({ error: 'Event not found' });
+
+    const existingTitles = (event.personalizedIdeas || []).map(i => i.title);
+    const { ideas, aiStatus } = await generateMoreIdeas(event, existingTitles);
+
+    const createdIdeas = [];
+    for (const idea of ideas) {
+      const created = await prisma.personalizedIdea.create({
+        data: {
+          eventId: event.id,
+          title: sanitizeString(idea.title || 'Creative Idea', 120),
+          description: sanitizeString(idea.description || '', 600),
+          category: sanitizeString(idea.category || 'THEME_DECOR', 50).toUpperCase(),
+          costTier: sanitizeString(idea.costTier || 'MEDIUM', 20).toUpperCase(),
+          isSaved: true
+        }
+      });
+      createdIdeas.push(created);
+    }
+
+    res.status(201).json({
+      ideas: createdIdeas,
+      aiStatus
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = {
+  consultAi,
+  addPersonalizedIdea,
+  deletePersonalizedIdea,
+  generateMoreIdeas: generateMoreIdeasController
+};

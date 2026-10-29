@@ -45,9 +45,22 @@ export default function EventDashboard({
   onUpdateVendor,
   onDeleteVendor,
   onAddIdea,
-  onDeleteIdea
+  onDeleteIdea,
+  onGenerateMoreIdeas,
+  isSparkingIdeas
 }) {
   const [activeTab, setActiveTab] = useState('ideas');
+
+  const daysRemaining = React.useMemo(() => {
+    if (!event.targetDate) return null;
+    const target = new Date(event.targetDate);
+    if (isNaN(target.getTime())) return null;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    target.setHours(0, 0, 0, 0);
+    const diffTime = target.getTime() - today.getTime();
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }, [event.targetDate]);
 
   const summary = event.summary || {};
   const budgetUtilization = summary.percentSpent || 0;
@@ -124,6 +137,27 @@ export default function EventDashboard({
                 <span className="text-xs text-slate-300 font-medium flex items-center space-x-1 bg-white/10 px-2.5 py-1 rounded-full backdrop-blur-md">
                   <MapPin className="w-3.5 h-3.5 text-slate-400" />
                   <span>{event.location}</span>
+                </span>
+              )}
+
+              {daysRemaining !== null && (
+                <span className={`text-xs font-bold px-3 py-1 rounded-full backdrop-blur-md flex items-center space-x-1.5 border shadow-2xs ${
+                  daysRemaining > 0
+                    ? 'bg-amber-400/20 text-amber-200 border-amber-300/40'
+                    : daysRemaining === 0
+                    ? 'bg-emerald-400/20 text-emerald-200 border-emerald-300/40 animate-pulse'
+                    : 'bg-slate-400/20 text-slate-300 border-slate-300/30'
+                }`}>
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>
+                    {daysRemaining > 1
+                      ? `⏳ ${daysRemaining} Days To Go`
+                      : daysRemaining === 1
+                      ? '⏳ Tomorrow!'
+                      : daysRemaining === 0
+                      ? '🎉 Today is the Day!'
+                      : `✅ ${Math.abs(daysRemaining)} Days Ago`}
+                  </span>
                 </span>
               )}
             </div>
@@ -208,6 +242,8 @@ export default function EventDashboard({
             event={event}
             onAddIdea={onAddIdea}
             onDeleteIdea={onDeleteIdea}
+            onGenerateMoreIdeas={onGenerateMoreIdeas}
+            isSparkingIdeas={isSparkingIdeas}
           />
         )}
 

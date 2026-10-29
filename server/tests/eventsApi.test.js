@@ -178,4 +178,16 @@ describe('API Integration: Sub-resource CRUD', () => {
     expect(updateRes.status).toBe(200);
     expect(updateRes.body.item.status).toBe('BOOKED');
   });
+
+  test('generates additional personalized ideas via more-ideas endpoint', async () => {
+    const res = await request(app)
+      .post(`/api/events/${createdEventId}/more-ideas`)
+      .set('X-Session-Id', TEST_SESSION_ID);
+
+    expect(res.status).toBe(201);
+    expect(Array.isArray(res.body.ideas)).toBe(true);
+    expect(res.body.ideas.length).toBeGreaterThan(0);
+    expect(res.body.ideas[0]).toHaveProperty('title');
+    expect(res.body.ideas[0]).toHaveProperty('category');
+  });
 });

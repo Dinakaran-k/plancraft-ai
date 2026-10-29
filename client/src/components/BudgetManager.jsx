@@ -11,7 +11,8 @@ import {
   PieChart as PieIcon,
   Edit2,
   X,
-  Check
+  Check,
+  Download
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -68,6 +69,33 @@ export default function BudgetManager({
       currency: currency || 'USD',
       maximumFractionDigits: 0
     }).format(val || 0);
+  };
+
+  const handleExportCSV = () => {
+    const items = event.budgetItems || [];
+    if (items.length === 0) {
+      alert('No budget items to export.');
+      return;
+    }
+    const headers = ['Category', 'Title', 'Estimated Cost', 'Actual Cost', 'Status', 'Notes'];
+    const rows = items.map((i) => [
+      `"${(i.category || '').replace(/"/g, '""')}"`,
+      `"${(i.title || '').replace(/"/g, '""')}"`,
+      i.estimatedCost || 0,
+      i.actualCost || 0,
+      i.isPaid ? 'PAID' : 'PENDING',
+      `"${(i.notes || '').replace(/"/g, '""')}"`
+    ]);
+    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${(event.name || 'event').replace(/[^a-z0-9_-]/gi, '_')}_budget.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const handleCreate = (e) => {
@@ -242,13 +270,23 @@ export default function BudgetManager({
               Click checkboxes to mark items as paid, or click edit to update quotes.
             </p>
           </div>
-          <button
-            onClick={() => setIsAdding(!isAdding)}
-            className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white hover:bg-brand-700 shadow-sm transition-all"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Add Item</span>
-          </button>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={handleExportCSV}
+              className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all active:scale-95"
+              title="Export budget ledger as CSV"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              onClick={() => setIsAdding(!isAdding)}
+              className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white hover:bg-brand-700 shadow-sm transition-all"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Add Item</span>
+            </button>
+          </div>
         </div>
 
         {/* Add Form */}

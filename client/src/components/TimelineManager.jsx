@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Clock, Plus, Trash2, CheckCircle2, Circle, Calendar, Flag, Sparkles, Edit2, X, Check, Milestone } from 'lucide-react';
+import { Clock, Plus, Trash2, CheckCircle2, Circle, Calendar, Flag, Sparkles, Edit2, X, Check, Milestone, Download } from 'lucide-react';
 
 const PHASES = [
   { id: 'ALL', label: 'All Milestones' },
@@ -74,6 +74,61 @@ export default function TimelineManager({
       });
     }
     setEditingItemId(null);
+  };
+
+  const handleExportICS = () => {
+    if (items.length === 0) {
+      alert('No timeline milestones to export.');
+      return;
+    }
+
+    const pad = (n) => String(n).padStart(2, '0');
+    const now = new Date();
+    const dtstamp = `${now.getUTCFullYear()}${pad(now.getUTCMonth() + 1)}${pad(now.getUTCDate())}T${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}${pad(now.getUTCSeconds())}Z`;
+
+    let baseDate = event.targetDate ? new Date(event.targetDate) : new Date();
+    if (isNaN(baseDate.getTime())) baseDate = new Date();
+
+    const eventsICS = items.map((item, idx) => {
+      const eventStart = new Date(baseDate.getTime() + idx * 3600 * 1000);
+      const dtstart = `${eventStart.getUTCFullYear()}${pad(eventStart.getUTCMonth() + 1)}${pad(eventStart.getUTCDate())}T${pad(eventStart.getUTCHours())}${pad(eventStart.getUTCMinutes())}00Z`;
+      const dtend = `${eventStart.getUTCFullYear()}${pad(eventStart.getUTCMonth() + 1)}${pad(eventStart.getUTCDate())}T${pad(eventStart.getUTCHours() + 1)}${pad(eventStart.getUTCMinutes())}00Z`;
+
+      const cleanSummary = (item.title || 'Milestone').replace(/\n/g, ' ');
+      const cleanDesc = `Phase: ${item.phase || 'N/A'}\\nTiming: ${item.time || 'N/A'}\\nNotes: ${item.notes || 'None'}`;
+
+      return [
+        'BEGIN:VEVENT',
+        `UID:plancraft-${event.id}-${item.id || idx}@plancraft.ai`,
+        `DTSTAMP:${dtstamp}`,
+        `DTSTART:${dtstart}`,
+        `DTEND:${dtend}`,
+        `SUMMARY:[PlanCraft] ${cleanSummary}`,
+        `DESCRIPTION:${cleanDesc}`,
+        `STATUS:${item.isCompleted ? 'COMPLETED' : 'CONFIRMED'}`,
+        'END:VEVENT'
+      ].join('\r\n');
+    }).join('\r\n');
+
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//PlanCraft AI//Event Milestones//EN',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      eventsICS,
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${(event.name || 'event').replace(/[^a-z0-9_-]/gi, '_')}_schedule.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const getPhaseColor = (p) => {
@@ -154,13 +209,24 @@ export default function TimelineManager({
           </button>
         ))}
 
-        <button
-          onClick={() => setIsAdding(!isAdding)}
-          className="ml-auto inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-600 text-white hover:bg-brand-700 whitespace-nowrap shadow-sm"
-        >
-          <Plus className="w-3.5 h-3.5" />
-          <span>Add Milestone</span>
-        </button>
+        <div className="ml-auto flex items-center space-x-2">
+          <button
+            onClick={handleExportICS}
+            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 whitespace-nowrap shadow-2xs transition-all active:scale-95"
+            title="Export schedule to Apple/Google/Outlook Calendar (.ics)"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Export Calendar (.ics)</span>
+          </button>
+
+          <button
+            onClick={() => setIsAdding(!isAdding)}
+            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-600 text-white hover:bg-brand-700 whitespace-nowrap shadow-sm transition-all active:scale-95"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Add Milestone</span>
+          </button>
+        </div>
       </div>
 
       {/* Add Form Dropdown */}

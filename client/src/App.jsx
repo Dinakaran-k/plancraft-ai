@@ -16,6 +16,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isConsulting, setIsConsulting] = useState(false);
+  const [isSparkingIdeas, setIsSparkingIdeas] = useState(false);
   const [showWizard, setShowWizard] = useState(false);
   const [isCoPilotOpen, setIsCoPilotOpen] = useState(false);
   const [announcement, setAnnouncement] = useState('');
@@ -182,6 +183,22 @@ export default function App() {
     await selectEvent(currentEvent.id);
   };
 
+  const handleGenerateMoreIdeas = async () => {
+    if (!currentEvent || isSparkingIdeas) return;
+    try {
+      setIsSparkingIdeas(true);
+      setAnnouncement('Gemini is generating additional bespoke ideas...');
+      await eventService.generateMoreIdeas(currentEvent.id);
+      await selectEvent(currentEvent.id);
+      setAnnouncement('Fresh creative ideas generated successfully.');
+    } catch (err) {
+      console.error('Failed to generate more ideas:', err);
+      alert('Could not generate more ideas at this moment. Please try again.');
+    } finally {
+      setIsSparkingIdeas(false);
+    }
+  };
+
   // Event Deletion
   const handleDeleteEvent = async (id) => {
     try {
@@ -251,6 +268,8 @@ export default function App() {
             onDeleteVendor={handleDeleteVendor}
             onAddIdea={handleAddIdea}
             onDeleteIdea={handleDeleteIdea}
+            onGenerateMoreIdeas={handleGenerateMoreIdeas}
+            isSparkingIdeas={isSparkingIdeas}
           />
         ) : (
           <div className="max-w-md mx-auto my-16 p-8 text-center bg-white rounded-2xl border border-slate-200 shadow-sm space-y-4">

@@ -256,9 +256,74 @@ async function consultAiCoPilot(event, query) {
   }
 }
 
+/**
+ * Generates additional creative ideas for an existing event.
+ */
+async function generateMoreIdeas(event, existingTitles = []) {
+  const prompt = `
+You are PlanCraft AI. Generate 3 FRESH, bespoke, and memorable ideas for this event:
+- Event: "${event.name}" (${event.eventType})
+- Guests: ${event.guestCount}
+- Budget: ${event.totalBudget} ${event.currency || 'USD'}
+- Vibe: ${event.vibe || 'Festive and memorable'}
+- Current ideas already in place: ${existingTitles.join(', ') || 'None'}
+
+Return ONLY a valid JSON object with a "newIdeas" array containing exactly 3 items:
+{
+  "newIdeas": [
+    {
+      "category": "THEME_DECOR" | "FOOD_BEVERAGE" | "ENTERTAINMENT" | "GIFT_FAVOR" | "LOGISTICS",
+      "title": "Short creative title",
+      "description": "2-3 sentences explaining the idea, guest engagement, and execution tip",
+      "costTier": "LOW" | "MEDIUM" | "HIGH"
+    }
+  ]
+}
+`;
+
+  try {
+    const raw = await callGeminiRaw(prompt);
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (e) {
+      const clean = raw.replace(/```json|```/g, '').trim();
+      parsed = JSON.parse(clean);
+    }
+    const ideas = Array.isArray(parsed.newIdeas) ? parsed.newIdeas : [];
+    return { ideas, aiStatus: 'SUCCESS' };
+  } catch (err) {
+    console.warn('Generate more ideas failed, returning fallback ideas:', err.message);
+    return {
+      ideas: [
+        {
+          category: 'ENTERTAINMENT',
+          title: 'Interactive Timeline Video Booth',
+          description: 'A cozy corner station where guests record a 30-second celebratory story or video message.',
+          costTier: 'LOW'
+        },
+        {
+          category: 'FOOD_BEVERAGE',
+          title: 'Artisan Late-Night Snack Cart',
+          description: 'Surprise guests with warm mini sliders, churros, or local street food bites during the final hour.',
+          costTier: 'MEDIUM'
+        },
+        {
+          category: 'THEME_DECOR',
+          title: 'Illuminated Ambient Wish Tree',
+          description: 'A decorative bonsai or birch tree with hanging fairy lights where attendees clip personalized tags.',
+          costTier: 'LOW'
+        }
+      ],
+      aiStatus: 'UNAVAILABLE'
+    };
+  }
+}
+
 module.exports = {
   generateEventBlueprint,
   consultAiCoPilot,
+  generateMoreIdeas,
   generateFallbackBlueprint,
   cleanAndParseJSON,
   GeminiUnavailableError

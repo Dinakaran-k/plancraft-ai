@@ -41,6 +41,7 @@ export const eventService = {
 
   // AI Consult & Ideas
   consultAi: (eventId, query) => api.post(`/events/${eventId}/ai-consult`, { query }).then((r) => r.data),
+  generateMoreIdeas: (eventId) => api.post(`/events/${eventId}/more-ideas`).then((r) => r.data),
   addIdea: (eventId, data) => api.post(`/ai/events/${eventId}/ideas`, data).then((r) => r.data),
   deleteIdea: (itemId) => api.delete(`/ai/ideas/${itemId}`).then((r) => r.data)
 };
