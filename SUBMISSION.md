@@ -11,8 +11,8 @@ This document contains pre-written, verified responses formatted to match the ch
 ---
 
 ### Field 2: Public GitHub Repository Link
-> `https://github.com/Dinakaran-k/<repo-name>`
-*(Ensure repository visibility is set to **Public** and size is under 10 MB)*
+> `https://github.com/Dinakaran-k/plancraft-ai`
+*(Repository visibility: Public | Size: ~183 KB, strictly under 10 MB)*
 
 ---
 
