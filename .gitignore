@@ -43,3 +43,4 @@ Thumbs.db
 _reference_repo/
 tmp/
 scratch/
+.neon
