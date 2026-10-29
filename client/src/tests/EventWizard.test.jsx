@@ -6,7 +6,7 @@ describe('EventWizard Component', () => {
   it('renders event type preset buttons and default fields', () => {
     render(<EventWizard onGeneratePlan={vi.fn()} isGenerating={false} />);
 
-    expect(screen.getByText('1. Choose Event Type')).toBeInTheDocument();
+    expect(screen.getByText(/Gathering Type/i)).toBeInTheDocument();
     expect(screen.getByText('Wedding')).toBeInTheDocument();
     expect(screen.getByText('Birthday Party')).toBeInTheDocument();
     expect(screen.getByText('Community Event')).toBeInTheDocument();
