@@ -41,23 +41,25 @@ This document contains pre-written, verified responses formatted to match the ch
 ---
 
 ### Field 6: Mention the Gen AI services utilized in the submission, and where did you utilize it?
-*(Limit: 1024 characters | Current count: ~840 chars)*
+*(Limit: 1024 characters | Current count: ~839 characters)*
 
-> Google Gemini (gemini-2.5-flash via @google/generative-ai SDK) is utilized in three core capabilities:
-> 
-> 1. Comprehensive Event Blueprint Generator (POST /api/events/generate-plan):
-> Invoked during event creation. Gemini synthesizes user inputs (event type: wedding/birthday/community, guest count, total budget, location, desired vibe) into a structured JSON plan comprising:
-> - Creative theme concept, color palette, and sensory styling
-> - Category budget allocation (venue, catering, decor, entertainment, media, contingency)
-> - Multi-phase timeline milestones and day-of run-of-show
-> - Essential vendor checklist with AI screening questions and negotiation tips
-> - 3-5 personalized creative experience ideas tailored to guest scale
-> 
-> 2. Interactive AI Planning Co-Pilot (POST /api/events/:id/ai-consult):
-> Real-time contextual consultation assistant for budget cuts, menu suggestions, and contingencies.
-> 
-> 3. Dynamic Idea Expansion Engine (POST /api/events/:id/more-ideas):
-> On-demand brainstorming tool that considers existing event state to craft 3 fresh, bespoke experiences.
+```
+Google Gemini 2.5 Flash (@google/generative-ai SDK) powers PlanCraft AI across 3 endpoints:
+
+1. Blueprint Architect (POST /api/events/generate-plan):
+Synthesizes event type, guest count, budget, venue, and vibe into a complete structured JSON plan:
+- Creative theme concept & styling
+- Categorized budget breakdown (venue, catering, decor, entertainment, media, contingency)
+- Phased timeline milestones & day-of run-of-show
+- Vendor checklist with AI screening questions and negotiation tips
+- Tailored experiential ideas
+
+2. AI Planning Co-Pilot (POST /api/events/:id/ai-consult):
+Real-time contextual consultation assistant for budget cuts, weather contingencies, and vendor tradeoffs.
+
+3. Idea Expansion (POST /api/events/:id/more-ideas):
+On-demand brainstorming engine that evaluates existing plans to generate 3 fresh, bespoke ideas.
+```
 
 ---
 
