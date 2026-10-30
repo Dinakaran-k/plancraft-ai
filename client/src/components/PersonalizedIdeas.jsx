@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Sparkles, Palette, Utensils, Music, Gift, Plus, Trash2, Tag, Copy, Check, Star } from 'lucide-react';
+import { useState } from 'react';
+import { Sparkles, Palette, Utensils, Music, Gift, Plus, Trash2, Copy, Check, Star } from 'lucide-react';
 
 const CATEGORY_ICONS = {
   THEME_DECOR: Palette,
@@ -255,6 +255,7 @@ export default function PersonalizedIdeas({
                           isFav ? 'text-amber-500 fill-amber-400' : 'text-slate-300 hover:text-slate-500'
                         }`}
                         title={isFav ? 'Favorited' : 'Add to favorites'}
+                        aria-label={isFav ? 'Remove idea from favorites' : 'Add idea to favorites'}
                       >
                         <Star className={`w-4 h-4 ${isFav ? 'fill-amber-400 text-amber-500' : ''}`} />
                       </button>
@@ -280,6 +281,7 @@ export default function PersonalizedIdeas({
                       onClick={() => handleCopy(idea.id, `${idea.title}: ${idea.description}`)}
                       className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100 transition-colors"
                       title="Copy idea description"
+                      aria-label={isCopied ? "Idea copied to clipboard" : "Copy idea description"}
                     >
                       {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                     </button>

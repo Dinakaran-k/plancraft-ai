@@ -1,5 +1,4 @@
-import React from 'react';
-import { Calendar, Sparkles, Plus, Layers, Heart, Cake, Users, Activity, Database } from 'lucide-react';
+import { Sparkles, Plus, Database } from 'lucide-react';
 
 export default function Header({
   events,

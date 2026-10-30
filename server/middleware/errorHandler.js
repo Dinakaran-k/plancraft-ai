@@ -1,6 +1,4 @@
-const { AppError } = require('../utils/errors');
-
-function errorHandler(err, req, res, next) {
+function errorHandler(err, req, res, _next) {
   // Log server-side with stack for debugging
   console.error('[SERVER_ERROR]', err);
 

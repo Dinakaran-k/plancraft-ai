@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
-  DollarSign,
   Plus,
   Trash2,
   CheckCircle2,
   Circle,
-  AlertTriangle,
-  TrendingUp,
-  Sparkles,
   PieChart as PieIcon,
   Edit2,
   X,
@@ -275,6 +271,7 @@ export default function BudgetManager({
               onClick={handleExportCSV}
               className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all active:scale-95"
               title="Export budget ledger as CSV"
+              aria-label="Export budget ledger as CSV"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Export CSV</span>
@@ -387,6 +384,7 @@ export default function BudgetManager({
                         onClick={() => saveEdit(item.id)}
                         className="p-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700"
                         title="Save"
+                        aria-label="Save changes to item"
                       >
                         <Check className="w-4 h-4" />
                       </button>
@@ -394,6 +392,7 @@ export default function BudgetManager({
                         onClick={() => setEditingItemId(null)}
                         className="p-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300"
                         title="Cancel"
+                        aria-label="Cancel editing item"
                       >
                         <X className="w-4 h-4" />
                       </button>

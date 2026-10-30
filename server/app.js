@@ -17,6 +17,7 @@ const aiRouter = require('./routes/ai');
 
 const app = express();
 
+app.disable('x-powered-by');
 app.set('trust proxy', 1);
 
 // Security Headers via Helmet with explicit CSP directives
@@ -33,6 +34,12 @@ app.use(
       }
     },
     frameguard: { action: 'deny' },
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true
+    },
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
     crossOriginEmbedderPolicy: false
   })
 );
@@ -60,7 +67,7 @@ function corsOptionsDelegate(req, callback) {
       } else if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
         isAllowed = true;
       }
-    } catch (e) {
+    } catch {
       isAllowed = false;
     }
   }

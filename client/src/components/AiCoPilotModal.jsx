@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { X, Sparkles, Send, Loader2, Bot, User, HelpCircle } from 'lucide-react';
 
 const SUGGESTED_PROMPTS = [

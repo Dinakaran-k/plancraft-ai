@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from './hooks/useSession';
 import { eventService } from './services/api';
 
@@ -110,7 +110,7 @@ export default function App() {
   // Budget Handlers
   const handleAddBudgetItem = async (data) => {
     if (!currentEvent) return;
-    const res = await eventService.addBudgetItem(currentEvent.id, data);
+    await eventService.addBudgetItem(currentEvent.id, data);
     await selectEvent(currentEvent.id);
   };
 

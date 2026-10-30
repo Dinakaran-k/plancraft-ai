@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Sparkles,
   DollarSign,
@@ -8,13 +8,9 @@ import {
   Calendar,
   MapPin,
   Trash2,
-  ChevronRight,
-  TrendingUp,
-  CheckCircle2,
   Printer,
   Heart,
-  Cake,
-  PartyPopper
+  Cake
 } from 'lucide-react';
 
 import BudgetManager from './BudgetManager';
@@ -31,7 +27,7 @@ const TABS = [
 
 export default function EventDashboard({
   event,
-  onRefresh,
+  onRefresh: _onRefresh,
   onOpenCoPilot,
   onDeleteEvent,
   onAddBudgetItem,
@@ -51,7 +47,7 @@ export default function EventDashboard({
 }) {
   const [activeTab, setActiveTab] = useState('ideas');
 
-  const daysRemaining = React.useMemo(() => {
+  const daysRemaining = useMemo(() => {
     if (!event.targetDate) return null;
     const target = new Date(event.targetDate);
     if (isNaN(target.getTime())) return null;
@@ -63,11 +59,8 @@ export default function EventDashboard({
   }, [event.targetDate]);
 
   const summary = event.summary || {};
-  const budgetUtilization = summary.percentSpent || 0;
   const milestonesDone = summary.timelineStats?.completed || 0;
   const milestonesTotal = summary.timelineStats?.total || 0;
-  const vendorsTotal = summary.vendorStats?.total || 0;
-  const vendorsBooked = (summary.vendorStats?.byStatus?.BOOKED || 0) + (summary.vendorStats?.byStatus?.CONFIRMED || 0);
 
   const formatCurrency = (val) => {
     return new Intl.NumberFormat('en-US', {
@@ -185,6 +178,7 @@ export default function EventDashboard({
               onClick={handlePrint}
               className="inline-flex items-center space-x-1.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-200 hover:text-white bg-white/10 hover:bg-white/15 border border-white/15 backdrop-blur-md transition-all active:scale-95 shadow-sm"
               title="Print or Save PDF"
+              aria-label="Print event plan or save as PDF"
             >
               <Printer className="w-4 h-4" />
               <span className="hidden sm:inline">Print Plan</span>
@@ -214,13 +208,22 @@ export default function EventDashboard({
       </div>
 
       {/* Main Tab Bar Navigation */}
-      <div className="flex items-center space-x-2 border-b border-slate-200/90 pb-px overflow-x-auto print:hidden">
+      <div
+        role="tablist"
+        aria-label="Event Management Navigation"
+        className="flex items-center space-x-2 border-b border-slate-200/90 pb-px overflow-x-auto print:hidden"
+      >
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
           return (
             <button
               key={tab.id}
+              role="tab"
+              id={`tab-${tab.id}`}
+              aria-selected={isActive}
+              aria-controls={`panel-${tab.id}`}
+              tabIndex={isActive ? 0 : -1}
               onClick={() => setActiveTab(tab.id)}
               className={`inline-flex items-center space-x-2.5 px-5 py-3.5 text-xs font-bold border-b-2 whitespace-nowrap transition-all rounded-t-xl ${
                 isActive
@@ -236,7 +239,12 @@ export default function EventDashboard({
       </div>
 
       {/* Active Tab Content Area */}
-      <section aria-label="Event Details Content" className="transition-all animate-fadeIn">
+      <section
+        role="tabpanel"
+        id={`panel-${activeTab}`}
+        aria-labelledby={`tab-${activeTab}`}
+        className="transition-all animate-fadeIn"
+      >
         {activeTab === 'ideas' && (
           <PersonalizedIdeas
             event={event}

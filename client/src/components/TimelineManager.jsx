@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Clock, Plus, Trash2, CheckCircle2, Circle, Calendar, Flag, Sparkles, Edit2, X, Check, Milestone, Download } from 'lucide-react';
+import { useState } from 'react';
+import { Clock, Plus, Trash2, CheckCircle2, Circle, Edit2, X, Check, Milestone, Download } from 'lucide-react';
 
 const PHASES = [
   { id: 'ALL', label: 'All Milestones' },
@@ -12,7 +12,7 @@ const PHASES = [
 
 export default function TimelineManager({
   event,
-  summary,
+  summary: _summary,
   onToggleComplete,
   onAddItem,
   onUpdateItem,
@@ -214,6 +214,7 @@ export default function TimelineManager({
             onClick={handleExportICS}
             className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 whitespace-nowrap shadow-2xs transition-all active:scale-95"
             title="Export schedule to Apple/Google/Outlook Calendar (.ics)"
+            aria-label="Export schedule to calendar file in iCalendar format"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export Calendar (.ics)</span>
@@ -328,6 +329,7 @@ export default function TimelineManager({
                       onClick={() => saveEdit(item.id)}
                       className="p-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700"
                       title="Save"
+                      aria-label="Save milestone changes"
                     >
                       <Check className="w-4 h-4" />
                     </button>
@@ -335,6 +337,7 @@ export default function TimelineManager({
                       onClick={() => setEditingItemId(null)}
                       className="p-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300"
                       title="Cancel"
+                      aria-label="Cancel editing milestone"
                     >
                       <X className="w-4 h-4" />
                     </button>

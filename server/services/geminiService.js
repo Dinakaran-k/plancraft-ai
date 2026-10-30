@@ -286,7 +286,7 @@ Return ONLY a valid JSON object with a "newIdeas" array containing exactly 3 ite
     let parsed;
     try {
       parsed = JSON.parse(raw);
-    } catch (e) {
+    } catch {
       const clean = raw.replace(/```json|```/g, '').trim();
       parsed = JSON.parse(clean);
     }

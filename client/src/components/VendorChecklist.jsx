@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Users, Plus, Trash2, Check, Phone, DollarSign, HelpCircle, Sparkles, Edit2, X, Filter } from 'lucide-react';
+import { useState } from 'react';
+import { Users, Plus, Trash2, Phone, Sparkles, Edit2 } from 'lucide-react';
 
 const STATUSES = [
   { id: 'NOT_CONTACTED', label: 'Not Contacted', color: 'bg-slate-100 text-slate-700 border-slate-200' },
@@ -23,7 +23,7 @@ const VENDOR_CATEGORIES = [
 
 export default function VendorChecklist({
   event,
-  summary,
+  summary: _summary,
   onAddVendor,
   onUpdateVendor,
   onDeleteVendor,
@@ -281,12 +281,14 @@ export default function VendorChecklist({
                     <button
                       onClick={() => saveEdit(item.id)}
                       className="px-3 py-1 bg-brand-600 text-white rounded-lg text-xs font-semibold"
+                      aria-label="Save vendor details"
                     >
                       Save
                     </button>
                     <button
                       onClick={() => setEditingItemId(null)}
                       className="px-3 py-1 bg-slate-200 text-slate-700 rounded-lg text-xs"
+                      aria-label="Cancel editing vendor"
                     >
                       Cancel
                     </button>

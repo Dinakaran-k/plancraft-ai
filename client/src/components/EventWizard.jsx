@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Sparkles, Heart, Cake, Users, Calendar, DollarSign, MapPin, Compass, ArrowRight, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { useState } from 'react';
+import { Sparkles, Heart, Cake, Users, ArrowRight, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 const EVENT_PRESETS = [
   {
