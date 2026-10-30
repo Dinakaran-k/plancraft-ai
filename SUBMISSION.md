@@ -37,7 +37,7 @@ Production release of PlanCraft AI:
 3. High-Efficiency Engine: Added PostgreSQL foreign-key indexes across child tables, Gzip/Brotli compression, and Rollup chunk splitting reducing core JS to 77 kB.
 4. Robust Code Quality: Integrated React ErrorBoundary for fault-tolerant UI recovery, formal ESLint standards, and centralized AppError hierarchy.
 5. Export Tools: One-click CSV Budget Ledger export and standard RFC 5545 iCalendar (.ics) export.
-6. Accessibility & Security: WCAG 2.1 AA/AAA compliance with aria-live announcer, Helmet headers, CORS allowlisting, and 37 automated tests (100% passing).
+6. Accessibility & Security: WCAG 2.1 AA/AAA compliance with aria-live announcer, Helmet headers, CORS allowlisting, and 40 automated tests (100% passing).
 ```
 
 ---
