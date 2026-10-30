@@ -236,7 +236,7 @@ export default function EventDashboard({
       </div>
 
       {/* Active Tab Content Area */}
-      <main className="transition-all animate-fadeIn">
+      <section aria-label="Event Details Content" className="transition-all animate-fadeIn">
         {activeTab === 'ideas' && (
           <PersonalizedIdeas
             event={event}
@@ -279,7 +279,7 @@ export default function EventDashboard({
             onDeleteVendor={onDeleteVendor}
           />
         )}
-      </main>
+      </section>
     </div>
   );
 }

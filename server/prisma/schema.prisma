@@ -31,6 +31,7 @@ model Event {
   consultations     AiConsultation[]
 
   @@index([sessionId])
+  @@index([sessionId, createdAt])
 }
 
 model BudgetItem {
@@ -46,6 +47,7 @@ model BudgetItem {
   createdAt     DateTime @default(now())
 
   @@index([eventId])
+  @@index([eventId, category])
 }
 
 model TimelineItem {
@@ -62,6 +64,7 @@ model TimelineItem {
   createdAt   DateTime @default(now())
 
   @@index([eventId])
+  @@index([eventId, orderIndex])
 }
 
 model VendorItem {
@@ -103,4 +106,5 @@ model AiConsultation {
   createdAt DateTime @default(now())
 
   @@index([eventId])
+  @@index([eventId, createdAt])
 }

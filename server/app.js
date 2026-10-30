@@ -19,10 +19,21 @@ const app = express();
 
 app.set('trust proxy', 1);
 
-// Security Headers via Helmet
+// Security Headers via Helmet with explicit CSP directives
 app.use(
   helmet({
-    contentSecurityPolicy: false // Allows inline styles/assets for Vite production bundle
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+        imgSrc: ["'self'", "data:", "https:"],
+        connectSrc: ["'self'", "https://*.onrender.com", "https://api.render.com"]
+      }
+    },
+    frameguard: { action: 'deny' },
+    crossOriginEmbedderPolicy: false
   })
 );
 

@@ -211,6 +211,13 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-brand-600 focus:text-white focus:rounded-xl focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-brand-400 font-bold text-xs"
+      >
+        Skip to main content
+      </a>
+
       <AccessibilityAnnouncer message={announcement} />
 
       <Header
@@ -238,7 +245,7 @@ export default function App() {
         </div>
       )}
 
-      <div className="flex-1">
+      <main id="main-content" tabIndex="-1" className="flex-1 focus:outline-none">
         {isLoading ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-3">
             <Loader2 className="w-8 h-8 text-brand-600 animate-spin" />
@@ -287,7 +294,7 @@ export default function App() {
             </button>
           </div>
         )}
-      </div>
+      </main>
 
       {currentEvent && (
         <AiCoPilotModal
