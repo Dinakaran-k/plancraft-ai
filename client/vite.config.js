@@ -12,6 +12,18 @@ export default defineConfig({
       }
     }
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          icons: ['lucide-react'],
+          network: ['axios']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 600
+  },
   test: {
     globals: true,
     environment: 'jsdom',

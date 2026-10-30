@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const compression = require('compression');
 
 const { requireSession } = require('./middleware/sessionMiddleware');
 const { standardApiLimiter } = require('./middleware/rateLimiter');
@@ -65,6 +66,9 @@ function corsOptionsDelegate(req, callback) {
   });
 }
 
+// Enable Gzip/Brotli response compression for efficient network payloads
+app.use(compression());
+
 app.use(express.json({ limit: '50kb' }));
 
 // Health Check (Public, no session requirement)
@@ -87,9 +91,20 @@ app.use('/api/timeline', timelineRouter);
 app.use('/api/vendors', vendorsRouter);
 app.use('/api/ai', aiRouter);
 
-// Single Combined Deploy: Serve built client assets in production
+// Single Combined Deploy: Serve built client assets in production with HTTP caching
 const clientDistPath = path.join(__dirname, '../client/dist');
-app.use(express.static(clientDistPath));
+app.use(
+  express.static(clientDistPath, {
+    maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0,
+    etag: true,
+    setHeaders: (res, filePath) => {
+      // Hashed assets in assets/ are cacheable for 1 year
+      if (filePath.includes(path.join('dist', 'assets'))) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      }
+    }
+  })
+);
 
 app.get(/^(?!\/api).*/, (req, res, next) => {
   res.sendFile(path.join(clientDistPath, 'index.html'), (err) => {

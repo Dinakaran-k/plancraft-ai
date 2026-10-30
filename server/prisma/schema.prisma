@@ -44,6 +44,8 @@ model BudgetItem {
   isPaid        Boolean  @default(false)
   notes         String?
   createdAt     DateTime @default(now())
+
+  @@index([eventId])
 }
 
 model TimelineItem {
@@ -58,6 +60,8 @@ model TimelineItem {
   notes       String?
   orderIndex  Int      @default(0)
   createdAt   DateTime @default(now())
+
+  @@index([eventId])
 }
 
 model VendorItem {
@@ -72,6 +76,8 @@ model VendorItem {
   notes           String?
   aiScreeningTips String?
   createdAt       DateTime @default(now())
+
+  @@index([eventId])
 }
 
 model PersonalizedIdea {
@@ -84,6 +90,8 @@ model PersonalizedIdea {
   costTier    String   @default("MEDIUM") // "LOW" | "MEDIUM" | "HIGH"
   isSaved     Boolean  @default(true)
   createdAt   DateTime @default(now())
+
+  @@index([eventId])
 }
 
 model AiConsultation {
@@ -93,4 +101,6 @@ model AiConsultation {
   query     String
   reply     String
   createdAt DateTime @default(now())
+
+  @@index([eventId])
 }

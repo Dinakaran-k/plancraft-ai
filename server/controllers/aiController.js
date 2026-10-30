@@ -106,9 +106,9 @@ async function generateMoreIdeasController(req, res, next) {
     const existingTitles = (event.personalizedIdeas || []).map(i => i.title);
     const { ideas, aiStatus } = await generateMoreIdeas(event, existingTitles);
 
-    const createdIdeas = [];
-    for (const idea of ideas) {
-      const created = await prisma.personalizedIdea.create({
+    // Efficient atomic batch persistence via single transaction pipeline
+    const insertOperations = ideas.map((idea) =>
+      prisma.personalizedIdea.create({
         data: {
           eventId: event.id,
           title: sanitizeString(idea.title || 'Creative Idea', 120),
@@ -117,9 +117,12 @@ async function generateMoreIdeasController(req, res, next) {
           costTier: sanitizeString(idea.costTier || 'MEDIUM', 20).toUpperCase(),
           isSaved: true
         }
-      });
-      createdIdeas.push(created);
-    }
+      })
+    );
+
+    const createdIdeas = insertOperations.length > 0
+      ? await prisma.$transaction(insertOperations)
+      : [];
 
     res.status(201).json({
       ideas: createdIdeas,
