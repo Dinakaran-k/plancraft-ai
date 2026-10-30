@@ -44,3 +44,6 @@ _reference_repo/
 tmp/
 scratch/
 .neon
+*.webm
+*.mp4
+demo_recordings/
