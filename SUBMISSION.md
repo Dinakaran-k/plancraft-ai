@@ -28,15 +28,17 @@ This document contains pre-written, verified responses formatted to match the ch
 ---
 
 ### Field 5: Describe the changes/updates made in the deployed version
-*(Limit: 1024 characters | Current count: ~760 chars)*
+*(Limit: 1024 characters | Current count: ~897 characters)*
 
-> Production release of PlanCraft AI:
-> 1. Engineered GenAI Event Blueprint Architect powered by Gemini 2.5 Flash, generating categorized budgets, phased timeline countdowns, vendor checklists, and bespoke creative concepts in a single transactional step.
-> 2. Implemented interactive AI Planning Co-Pilot (POST /api/events/:id/ai-consult) and Dynamic Idea Expansion (POST /api/events/:id/more-ideas) for real-time tradeoffs, contingencies, and fresh creative inspiration.
-> 3. Added dynamic budget analytics (estimated vs actual variance, category breakdown, CSV export) and Calendar milestone export (.ics for Google/Apple Calendar).
-> 4. Designed WCAG 2.1 AA/AAA accessible UI with screen reader announcer (aria-live), full keyboard navigation, event ambiance theming, and countdown badge.
-> 5. Fortified with Helmet security headers, CORS origin allowlisting, Neon PostgreSQL, and rate limiters.
-> 6. 37 passing automated tests (Jest, Supertest, Vitest).
+```
+Production release of PlanCraft AI:
+1. GenAI Event Architect (Gemini 2.5 Flash): Synthesizes budgets, phased countdowns, vendor checklists, and bespoke ideas in a single atomic database transaction.
+2. AI Planning Co-Pilot & Idea Expansion: Real-time tradeoff analysis, weather contingencies, and on-demand creative brainstorming.
+3. High-Efficiency Engine: Added PostgreSQL foreign-key indexes across child tables, Gzip/Brotli compression, and Rollup chunk splitting reducing core JS to 77 kB.
+4. Robust Code Quality: Integrated React ErrorBoundary for fault-tolerant UI recovery, formal ESLint standards, and centralized AppError hierarchy.
+5. Export Tools: One-click CSV Budget Ledger export and standard RFC 5545 iCalendar (.ics) export.
+6. Accessibility & Security: WCAG 2.1 AA/AAA compliance with aria-live announcer, Helmet headers, CORS allowlisting, and 37 automated tests (100% passing).
+```
 
 ---
 
