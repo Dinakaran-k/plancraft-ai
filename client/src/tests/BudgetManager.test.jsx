@@ -7,8 +7,22 @@ describe('BudgetManager Component', () => {
     totalBudget: 10000,
     currency: 'USD',
     budgetItems: [
-      { id: '1', title: 'Grand Ballroom Venue', category: 'VENUE', estimatedCost: 4000, actualCost: 3900, isPaid: true },
-      { id: '2', title: 'Acoustic Guitarist', category: 'ENTERTAINMENT', estimatedCost: 800, actualCost: 0, isPaid: false }
+      {
+        id: '1',
+        title: 'Grand Ballroom Venue',
+        category: 'VENUE',
+        estimatedCost: 4000,
+        actualCost: 3900,
+        isPaid: true
+      },
+      {
+        id: '2',
+        title: 'Acoustic Guitarist',
+        category: 'ENTERTAINMENT',
+        estimatedCost: 800,
+        actualCost: 0,
+        isPaid: false
+      }
     ]
   };
 

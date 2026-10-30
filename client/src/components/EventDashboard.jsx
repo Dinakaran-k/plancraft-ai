@@ -106,7 +106,9 @@ export default function EventDashboard({
   return (
     <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 space-y-6">
       {/* Event Overview Hero Banner */}
-      <div className={`relative bg-gradient-to-r ${ambiance.banner} text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-white/10 overflow-hidden print:border-none print:shadow-none print:bg-none print:text-black`}>
+      <div
+        className={`relative bg-gradient-to-r ${ambiance.banner} text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-white/10 overflow-hidden print:border-none print:shadow-none print:bg-none print:text-black`}
+      >
         {/* Ambient radial blur glow */}
         <div className="absolute -top-24 -right-24 w-80 h-80 bg-brand-500/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none" />
@@ -114,7 +116,9 @@ export default function EventDashboard({
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-3">
             <div className="flex items-center space-x-2.5 flex-wrap gap-y-1.5">
-              <span className={`inline-flex items-center space-x-1.5 text-xs font-bold px-3 py-1 rounded-full border backdrop-blur-md ${ambiance.badge} uppercase tracking-wider`}>
+              <span
+                className={`inline-flex items-center space-x-1.5 text-xs font-bold px-3 py-1 rounded-full border backdrop-blur-md ${ambiance.badge} uppercase tracking-wider`}
+              >
                 <TypeIcon className="w-3.5 h-3.5" />
                 <span>{event.eventType}</span>
               </span>
@@ -134,22 +138,24 @@ export default function EventDashboard({
               )}
 
               {daysRemaining !== null && (
-                <span className={`text-xs font-bold px-3 py-1 rounded-full backdrop-blur-md flex items-center space-x-1.5 border shadow-2xs ${
-                  daysRemaining > 0
-                    ? 'bg-amber-400/20 text-amber-200 border-amber-300/40'
-                    : daysRemaining === 0
-                    ? 'bg-emerald-400/20 text-emerald-200 border-emerald-300/40 animate-pulse'
-                    : 'bg-slate-400/20 text-slate-300 border-slate-300/30'
-                }`}>
+                <span
+                  className={`text-xs font-bold px-3 py-1 rounded-full backdrop-blur-md flex items-center space-x-1.5 border shadow-2xs ${
+                    daysRemaining > 0
+                      ? 'bg-amber-400/20 text-amber-200 border-amber-300/40'
+                      : daysRemaining === 0
+                        ? 'bg-emerald-400/20 text-emerald-200 border-emerald-300/40 animate-pulse'
+                        : 'bg-slate-400/20 text-slate-300 border-slate-300/30'
+                  }`}
+                >
                   <Clock className="w-3.5 h-3.5" />
                   <span>
                     {daysRemaining > 1
                       ? `⏳ ${daysRemaining} Days To Go`
                       : daysRemaining === 1
-                      ? '⏳ Tomorrow!'
-                      : daysRemaining === 0
-                      ? '🎉 Today is the Day!'
-                      : `✅ ${Math.abs(daysRemaining)} Days Ago`}
+                        ? '⏳ Tomorrow!'
+                        : daysRemaining === 0
+                          ? '🎉 Today is the Day!'
+                          : `✅ ${Math.abs(daysRemaining)} Days Ago`}
                   </span>
                 </span>
               )}
@@ -164,10 +170,15 @@ export default function EventDashboard({
                 👥 <strong className="text-white ml-1">{event.guestCount}</strong> Expected Guests
               </span>
               <span className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl">
-                💰 <strong className="text-white ml-1">{formatCurrency(event.totalBudget)}</strong> Target Budget
+                💰 <strong className="text-white ml-1">{formatCurrency(event.totalBudget)}</strong>{' '}
+                Target Budget
               </span>
               <span className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl">
-                ⏱️ <strong className="text-white ml-1">{milestonesDone}/{milestonesTotal}</strong> Milestones Completed
+                ⏱️{' '}
+                <strong className="text-white ml-1">
+                  {milestonesDone}/{milestonesTotal}
+                </strong>{' '}
+                Milestones Completed
               </span>
             </div>
           </div>

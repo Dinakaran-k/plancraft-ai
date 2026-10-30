@@ -38,7 +38,8 @@ function computeEventSummary(event) {
 
   const effectiveSpent = totalActual > 0 ? totalActual : totalEstimated;
   const remainingBudget = Math.max(0, totalBudget - effectiveSpent);
-  const percentSpent = totalBudget > 0 ? Math.min(100, Math.round((effectiveSpent / totalBudget) * 100)) : 0;
+  const percentSpent =
+    totalBudget > 0 ? Math.min(100, Math.round((effectiveSpent / totalBudget) * 100)) : 0;
   const isOverBudget = effectiveSpent > totalBudget;
 
   const categoryBreakdown = Object.values(categoryMap).map((c) => ({
@@ -51,7 +52,8 @@ function computeEventSummary(event) {
   // Timeline progress
   const totalMilestones = timelineItems.length;
   const completedMilestones = timelineItems.filter((t) => t.isCompleted).length;
-  const timelinePercent = totalMilestones > 0 ? Math.round((completedMilestones / totalMilestones) * 100) : 0;
+  const timelinePercent =
+    totalMilestones > 0 ? Math.round((completedMilestones / totalMilestones) * 100) : 0;
 
   // Vendor pipeline
   const vendorStatuses = {

@@ -103,7 +103,7 @@ async function generateMoreIdeasController(req, res, next) {
     });
     if (!event) return res.status(404).json({ error: 'Event not found' });
 
-    const existingTitles = (event.personalizedIdeas || []).map(i => i.title);
+    const existingTitles = (event.personalizedIdeas || []).map((i) => i.title);
     const { ideas, aiStatus } = await generateMoreIdeas(event, existingTitles);
 
     // Efficient atomic batch persistence via single transaction pipeline
@@ -120,9 +120,8 @@ async function generateMoreIdeasController(req, res, next) {
       })
     );
 
-    const createdIdeas = insertOperations.length > 0
-      ? await prisma.$transaction(insertOperations)
-      : [];
+    const createdIdeas =
+      insertOperations.length > 0 ? await prisma.$transaction(insertOperations) : [];
 
     res.status(201).json({
       ideas: createdIdeas,

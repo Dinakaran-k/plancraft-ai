@@ -111,7 +111,8 @@ function cleanAndParseJSON(rawText) {
     parsed.aiOverview = 'Custom curated event plan generated for your special celebration.';
   }
   if (!parsed.aiThemeConcept || typeof parsed.aiThemeConcept !== 'string') {
-    parsed.aiThemeConcept = 'Harmonious celebration balancing ambiance, guest comfort, and memorable details.';
+    parsed.aiThemeConcept =
+      'Harmonious celebration balancing ambiance, guest comfort, and memorable details.';
   }
   if (!Array.isArray(parsed.budgetPlan)) parsed.budgetPlan = [];
   if (!Array.isArray(parsed.timelinePlan)) parsed.timelinePlan = [];
@@ -135,35 +136,135 @@ function generateFallbackBlueprint(data) {
     aiThemeConcept: isWedding
       ? 'Timeless Romance: Soft ivory, eucalyptus green, and champagne accents with warm ambient fairy lighting.'
       : isBirthday
-      ? 'Vibrant Celebration: Radiant gold and cobalt blue with festive interactive photo stations.'
-      : 'Community Unity: Earthy terracotta and leafy sage with open communal seating and accessible activities.',
+        ? 'Vibrant Celebration: Radiant gold and cobalt blue with festive interactive photo stations.'
+        : 'Community Unity: Earthy terracotta and leafy sage with open communal seating and accessible activities.',
     budgetPlan: [
-      { category: 'VENUE', title: 'Venue Booking & Facilities', estimatedCost: Math.round(budget * 0.35), notes: 'Secures main hall, restrooms, and basic utility access.' },
-      { category: 'CATERING', title: 'Food & Beverage Service', estimatedCost: Math.round(budget * 0.30), notes: 'Buffet or family-style dining plus welcome refreshments.' },
-      { category: 'DECOR', title: 'Floral & Thematic Decor', estimatedCost: Math.round(budget * 0.12), notes: 'Centerpieces, entrance arch, and table settings.' },
-      { category: 'ENTERTAINMENT', title: 'Music & Sound System', estimatedCost: Math.round(budget * 0.10), notes: 'Live DJ or acoustic musician + audio setup.' },
-      { category: 'MEDIA', title: 'Photography & Memory Capture', estimatedCost: Math.round(budget * 0.08), notes: 'Covers key ceremony and candid reception moments.' },
-      { category: 'CONTINGENCY', title: 'Buffer & Incidentals', estimatedCost: Math.round(budget * 0.05), notes: 'Emergency fund for last-minute needs or extra guests.' }
+      {
+        category: 'VENUE',
+        title: 'Venue Booking & Facilities',
+        estimatedCost: Math.round(budget * 0.35),
+        notes: 'Secures main hall, restrooms, and basic utility access.'
+      },
+      {
+        category: 'CATERING',
+        title: 'Food & Beverage Service',
+        estimatedCost: Math.round(budget * 0.3),
+        notes: 'Buffet or family-style dining plus welcome refreshments.'
+      },
+      {
+        category: 'DECOR',
+        title: 'Floral & Thematic Decor',
+        estimatedCost: Math.round(budget * 0.12),
+        notes: 'Centerpieces, entrance arch, and table settings.'
+      },
+      {
+        category: 'ENTERTAINMENT',
+        title: 'Music & Sound System',
+        estimatedCost: Math.round(budget * 0.1),
+        notes: 'Live DJ or acoustic musician + audio setup.'
+      },
+      {
+        category: 'MEDIA',
+        title: 'Photography & Memory Capture',
+        estimatedCost: Math.round(budget * 0.08),
+        notes: 'Covers key ceremony and candid reception moments.'
+      },
+      {
+        category: 'CONTINGENCY',
+        title: 'Buffer & Incidentals',
+        estimatedCost: Math.round(budget * 0.05),
+        notes: 'Emergency fund for last-minute needs or extra guests.'
+      }
     ],
     timelinePlan: [
-      { phase: 'EARLY_PLANNING', title: 'Lock In Venue & Save The Dates', time: 'Phase 1', notes: 'Verify guest capacity, deposit terms, and parking.' },
-      { phase: 'MID_PLANNING', title: 'Finalize Catering & Core Vendors', time: 'Phase 2', notes: 'Complete food tastings and confirm audio/visual setup.' },
-      { phase: 'FINAL_PREP', title: 'RSVP Cutoff & Final Seating Layout', time: '2 Weeks Out', notes: 'Submit final headcount to caterer and create name cards.' },
-      { phase: 'DAY_OF', title: 'Venue Access & Vendor Setup', time: '10:00 AM', notes: 'Check sound, lighting, table arrangements, and signage.' },
-      { phase: 'DAY_OF', title: 'Guest Arrival & Welcome Refreshments', time: '02:00 PM', notes: 'Background playlist active, welcome drinks flowing.' },
-      { phase: 'DAY_OF', title: 'Main Program & Celebratory Meal', time: '03:30 PM', notes: 'Speeches, dining, and prime entertainment segment.' },
-      { phase: 'POST_EVENT', title: 'Vendor Teardown & Thank You Notes', time: 'Day After', notes: 'Verify venue return deposit and send photo highlights.' }
+      {
+        phase: 'EARLY_PLANNING',
+        title: 'Lock In Venue & Save The Dates',
+        time: 'Phase 1',
+        notes: 'Verify guest capacity, deposit terms, and parking.'
+      },
+      {
+        phase: 'MID_PLANNING',
+        title: 'Finalize Catering & Core Vendors',
+        time: 'Phase 2',
+        notes: 'Complete food tastings and confirm audio/visual setup.'
+      },
+      {
+        phase: 'FINAL_PREP',
+        title: 'RSVP Cutoff & Final Seating Layout',
+        time: '2 Weeks Out',
+        notes: 'Submit final headcount to caterer and create name cards.'
+      },
+      {
+        phase: 'DAY_OF',
+        title: 'Venue Access & Vendor Setup',
+        time: '10:00 AM',
+        notes: 'Check sound, lighting, table arrangements, and signage.'
+      },
+      {
+        phase: 'DAY_OF',
+        title: 'Guest Arrival & Welcome Refreshments',
+        time: '02:00 PM',
+        notes: 'Background playlist active, welcome drinks flowing.'
+      },
+      {
+        phase: 'DAY_OF',
+        title: 'Main Program & Celebratory Meal',
+        time: '03:30 PM',
+        notes: 'Speeches, dining, and prime entertainment segment.'
+      },
+      {
+        phase: 'POST_EVENT',
+        title: 'Vendor Teardown & Thank You Notes',
+        time: 'Day After',
+        notes: 'Verify venue return deposit and send photo highlights.'
+      }
     ],
     vendorPlan: [
-      { category: 'VENUE', vendorName: 'Premier Event Space', aiScreeningTips: 'Ask for load-in/load-out time windows and noise restrictions.' },
-      { category: 'CATERING', vendorName: 'Gourmet Catering Co.', aiScreeningTips: 'Confirm dietary alternatives (vegan/gluten-free) and server staffing ratios.' },
-      { category: 'PHOTOGRAPHY', vendorName: 'Storyteller Photography', aiScreeningTips: 'Request full recent gallery link, not just curated highlights.' },
-      { category: 'MUSIC', vendorName: 'Dynamic DJ & MC Services', aiScreeningTips: 'Provide a "Must Play" and "Do Not Play" song list in advance.' }
+      {
+        category: 'VENUE',
+        vendorName: 'Premier Event Space',
+        aiScreeningTips: 'Ask for load-in/load-out time windows and noise restrictions.'
+      },
+      {
+        category: 'CATERING',
+        vendorName: 'Gourmet Catering Co.',
+        aiScreeningTips:
+          'Confirm dietary alternatives (vegan/gluten-free) and server staffing ratios.'
+      },
+      {
+        category: 'PHOTOGRAPHY',
+        vendorName: 'Storyteller Photography',
+        aiScreeningTips: 'Request full recent gallery link, not just curated highlights.'
+      },
+      {
+        category: 'MUSIC',
+        vendorName: 'Dynamic DJ & MC Services',
+        aiScreeningTips: 'Provide a "Must Play" and "Do Not Play" song list in advance.'
+      }
     ],
     personalizedIdeas: [
-      { category: 'THEME_DECOR', title: 'Memory Wall & Photo Chronicle', description: 'Interactive display showcasing milestones and stories that guests can sign and contribute to.', costTier: 'LOW' },
-      { category: 'FOOD_BEVERAGE', title: 'Custom Signature Refreshment', description: 'Handcrafted signature punch or mocktail infused with seasonal berries and fresh herbs.', costTier: 'LOW' },
-      { category: 'ENTERTAINMENT', title: 'Interactive Audio Guestbook', description: 'Retro telephone where guests record spoken voice messages and well-wishes throughout the evening.', costTier: 'MEDIUM' }
+      {
+        category: 'THEME_DECOR',
+        title: 'Memory Wall & Photo Chronicle',
+        description:
+          'Interactive display showcasing milestones and stories that guests can sign and contribute to.',
+        costTier: 'LOW'
+      },
+      {
+        category: 'FOOD_BEVERAGE',
+        title: 'Custom Signature Refreshment',
+        description:
+          'Handcrafted signature punch or mocktail infused with seasonal berries and fresh herbs.',
+        costTier: 'LOW'
+      },
+      {
+        category: 'ENTERTAINMENT',
+        title: 'Interactive Audio Guestbook',
+        description:
+          'Retro telephone where guests record spoken voice messages and well-wishes throughout the evening.',
+        costTier: 'MEDIUM'
+      }
     ]
   };
 }
@@ -242,7 +343,9 @@ async function consultAiCoPilot(event, query) {
     const prompt = buildConsultPrompt(event, query);
     const result = await Promise.race([
       model.generateContent(prompt),
-      new Promise((_, reject) => setTimeout(() => reject(new GeminiUnavailableError('Timeout')), TIMEOUT_MS))
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new GeminiUnavailableError('Timeout')), TIMEOUT_MS)
+      )
     ]);
 
     const reply = result.response.text();
@@ -299,19 +402,22 @@ Return ONLY a valid JSON object with a "newIdeas" array containing exactly 3 ite
         {
           category: 'ENTERTAINMENT',
           title: 'Interactive Timeline Video Booth',
-          description: 'A cozy corner station where guests record a 30-second celebratory story or video message.',
+          description:
+            'A cozy corner station where guests record a 30-second celebratory story or video message.',
           costTier: 'LOW'
         },
         {
           category: 'FOOD_BEVERAGE',
           title: 'Artisan Late-Night Snack Cart',
-          description: 'Surprise guests with warm mini sliders, churros, or local street food bites during the final hour.',
+          description:
+            'Surprise guests with warm mini sliders, churros, or local street food bites during the final hour.',
           costTier: 'MEDIUM'
         },
         {
           category: 'THEME_DECOR',
           title: 'Illuminated Ambient Wish Tree',
-          description: 'A decorative bonsai or birch tree with hanging fairy lights where attendees clip personalized tags.',
+          description:
+            'A decorative bonsai or birch tree with hanging fairy lights where attendees clip personalized tags.',
           costTier: 'LOW'
         }
       ],

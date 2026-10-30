@@ -15,7 +15,10 @@ const aiGenerationLimiter = rateLimit({
   max: 30, // 30 AI generations per 5 minutes
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: 'AI generation limit reached for this session. Please wait a few minutes before generating more.' }
+  message: {
+    error:
+      'AI generation limit reached for this session. Please wait a few minutes before generating more.'
+  }
 });
 
 module.exports = { standardApiLimiter, aiGenerationLimiter };

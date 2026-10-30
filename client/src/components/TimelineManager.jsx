@@ -1,5 +1,16 @@
 import { useState } from 'react';
-import { Clock, Plus, Trash2, CheckCircle2, Circle, Edit2, X, Check, Milestone, Download } from 'lucide-react';
+import {
+  Clock,
+  Plus,
+  Trash2,
+  CheckCircle2,
+  Circle,
+  Edit2,
+  X,
+  Check,
+  Milestone,
+  Download
+} from 'lucide-react';
 
 const PHASES = [
   { id: 'ALL', label: 'All Milestones' },
@@ -34,9 +45,8 @@ export default function TimelineManager({
   const [editNotes, setEditNotes] = useState('');
 
   const items = event.timelineItems || [];
-  const filteredItems = selectedPhase === 'ALL'
-    ? items
-    : items.filter((i) => i.phase === selectedPhase);
+  const filteredItems =
+    selectedPhase === 'ALL' ? items : items.filter((i) => i.phase === selectedPhase);
 
   const completedCount = items.filter((i) => i.isCompleted).length;
   const percentComplete = items.length > 0 ? Math.round((completedCount / items.length) * 100) : 0;
@@ -89,26 +99,28 @@ export default function TimelineManager({
     let baseDate = event.targetDate ? new Date(event.targetDate) : new Date();
     if (isNaN(baseDate.getTime())) baseDate = new Date();
 
-    const eventsICS = items.map((item, idx) => {
-      const eventStart = new Date(baseDate.getTime() + idx * 3600 * 1000);
-      const dtstart = `${eventStart.getUTCFullYear()}${pad(eventStart.getUTCMonth() + 1)}${pad(eventStart.getUTCDate())}T${pad(eventStart.getUTCHours())}${pad(eventStart.getUTCMinutes())}00Z`;
-      const dtend = `${eventStart.getUTCFullYear()}${pad(eventStart.getUTCMonth() + 1)}${pad(eventStart.getUTCDate())}T${pad(eventStart.getUTCHours() + 1)}${pad(eventStart.getUTCMinutes())}00Z`;
+    const eventsICS = items
+      .map((item, idx) => {
+        const eventStart = new Date(baseDate.getTime() + idx * 3600 * 1000);
+        const dtstart = `${eventStart.getUTCFullYear()}${pad(eventStart.getUTCMonth() + 1)}${pad(eventStart.getUTCDate())}T${pad(eventStart.getUTCHours())}${pad(eventStart.getUTCMinutes())}00Z`;
+        const dtend = `${eventStart.getUTCFullYear()}${pad(eventStart.getUTCMonth() + 1)}${pad(eventStart.getUTCDate())}T${pad(eventStart.getUTCHours() + 1)}${pad(eventStart.getUTCMinutes())}00Z`;
 
-      const cleanSummary = (item.title || 'Milestone').replace(/\n/g, ' ');
-      const cleanDesc = `Phase: ${item.phase || 'N/A'}\\nTiming: ${item.time || 'N/A'}\\nNotes: ${item.notes || 'None'}`;
+        const cleanSummary = (item.title || 'Milestone').replace(/\n/g, ' ');
+        const cleanDesc = `Phase: ${item.phase || 'N/A'}\\nTiming: ${item.time || 'N/A'}\\nNotes: ${item.notes || 'None'}`;
 
-      return [
-        'BEGIN:VEVENT',
-        `UID:plancraft-${event.id}-${item.id || idx}@plancraft.ai`,
-        `DTSTAMP:${dtstamp}`,
-        `DTSTART:${dtstart}`,
-        `DTEND:${dtend}`,
-        `SUMMARY:[PlanCraft] ${cleanSummary}`,
-        `DESCRIPTION:${cleanDesc}`,
-        `STATUS:${item.isCompleted ? 'COMPLETED' : 'CONFIRMED'}`,
-        'END:VEVENT'
-      ].join('\r\n');
-    }).join('\r\n');
+        return [
+          'BEGIN:VEVENT',
+          `UID:plancraft-${event.id}-${item.id || idx}@plancraft.ai`,
+          `DTSTAMP:${dtstamp}`,
+          `DTSTART:${dtstart}`,
+          `DTEND:${dtend}`,
+          `SUMMARY:[PlanCraft] ${cleanSummary}`,
+          `DESCRIPTION:${cleanDesc}`,
+          `STATUS:${item.isCompleted ? 'COMPLETED' : 'CONFIRMED'}`,
+          'END:VEVENT'
+        ].join('\r\n');
+      })
+      .join('\r\n');
 
     const icsContent = [
       'BEGIN:VCALENDAR',
@@ -124,7 +136,10 @@ export default function TimelineManager({
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `${(event.name || 'event').replace(/[^a-z0-9_-]/gi, '_')}_schedule.ics`);
+    link.setAttribute(
+      'download',
+      `${(event.name || 'event').replace(/[^a-z0-9_-]/gi, '_')}_schedule.ics`
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -133,12 +148,18 @@ export default function TimelineManager({
 
   const getPhaseColor = (p) => {
     switch (p) {
-      case 'EARLY_PLANNING': return 'bg-sky-50 text-sky-700 border-sky-200';
-      case 'MID_PLANNING': return 'bg-indigoBrand-50 text-indigoBrand-700 border-indigoBrand-200';
-      case 'FINAL_PREP': return 'bg-amber-50 text-amber-700 border-amber-200';
-      case 'DAY_OF': return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-      case 'POST_EVENT': return 'bg-purple-50 text-purple-700 border-purple-200';
-      default: return 'bg-slate-50 text-slate-700 border-slate-200';
+      case 'EARLY_PLANNING':
+        return 'bg-sky-50 text-sky-700 border-sky-200';
+      case 'MID_PLANNING':
+        return 'bg-indigoBrand-50 text-indigoBrand-700 border-indigoBrand-200';
+      case 'FINAL_PREP':
+        return 'bg-amber-50 text-amber-700 border-amber-200';
+      case 'DAY_OF':
+        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+      case 'POST_EVENT':
+        return 'bg-purple-50 text-purple-700 border-purple-200';
+      default:
+        return 'bg-slate-50 text-slate-700 border-slate-200';
     }
   };
 
@@ -183,7 +204,9 @@ export default function TimelineManager({
                 : 'bg-white border-slate-200 hover:border-slate-300 text-slate-800'
             }`}
           >
-            <div className={`text-[10px] font-bold uppercase tracking-wider ${selectedPhase === st.id ? 'text-brand-400' : 'text-slate-500'}`}>
+            <div
+              className={`text-[10px] font-bold uppercase tracking-wider ${selectedPhase === st.id ? 'text-brand-400' : 'text-slate-500'}`}
+            >
               {st.label}
             </div>
             <div className="text-base font-bold mt-1">
@@ -232,9 +255,17 @@ export default function TimelineManager({
 
       {/* Add Form Dropdown */}
       {isAdding && (
-        <form onSubmit={handleCreate} className="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fadeIn">
+        <form
+          onSubmit={handleCreate}
+          className="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fadeIn"
+        >
           <div className="sm:col-span-2">
-            <label htmlFor="timeline-title" className="block text-xs font-semibold text-slate-600 mb-1">Milestone Action *</label>
+            <label
+              htmlFor="timeline-title"
+              className="block text-xs font-semibold text-slate-600 mb-1"
+            >
+              Milestone Action *
+            </label>
             <input
               id="timeline-title"
               type="text"
@@ -247,7 +278,12 @@ export default function TimelineManager({
           </div>
 
           <div>
-            <label htmlFor="timeline-phase" className="block text-xs font-semibold text-slate-600 mb-1">Planning Phase</label>
+            <label
+              htmlFor="timeline-phase"
+              className="block text-xs font-semibold text-slate-600 mb-1"
+            >
+              Planning Phase
+            </label>
             <select
               id="timeline-phase"
               value={phase}
@@ -255,13 +291,20 @@ export default function TimelineManager({
               className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500"
             >
               {PHASES.filter((p) => p.id !== 'ALL').map((p) => (
-                <option key={p.id} value={p.id}>{p.label}</option>
+                <option key={p.id} value={p.id}>
+                  {p.label}
+                </option>
               ))}
             </select>
           </div>
 
           <div>
-            <label htmlFor="timeline-time" className="block text-xs font-semibold text-slate-600 mb-1">Timing / Offset</label>
+            <label
+              htmlFor="timeline-time"
+              className="block text-xs font-semibold text-slate-600 mb-1"
+            >
+              Timing / Offset
+            </label>
             <input
               id="timeline-time"
               type="text"
@@ -273,7 +316,12 @@ export default function TimelineManager({
           </div>
 
           <div className="sm:col-span-2">
-            <label htmlFor="timeline-notes" className="block text-xs font-semibold text-slate-600 mb-1">Notes / Instructions</label>
+            <label
+              htmlFor="timeline-notes"
+              className="block text-xs font-semibold text-slate-600 mb-1"
+            >
+              Notes / Instructions
+            </label>
             <input
               id="timeline-notes"
               type="text"
@@ -310,7 +358,10 @@ export default function TimelineManager({
 
             if (isEditing) {
               return (
-                <div key={item.id} className="p-4 bg-slate-50/90 flex flex-col sm:flex-row items-center gap-3">
+                <div
+                  key={item.id}
+                  className="p-4 bg-slate-50/90 flex flex-col sm:flex-row items-center gap-3"
+                >
                   <input
                     type="text"
                     value={editTitle}
@@ -357,7 +408,9 @@ export default function TimelineManager({
                   <button
                     onClick={() => onToggleComplete(item.id)}
                     className="mt-0.5 text-slate-400 hover:text-brand-600 transition-colors focus:ring-2 focus:ring-brand-500 rounded"
-                    aria-label={item.isCompleted ? 'Mark milestone as pending' : 'Mark milestone as complete'}
+                    aria-label={
+                      item.isCompleted ? 'Mark milestone as pending' : 'Mark milestone as complete'
+                    }
                   >
                     {item.isCompleted ? (
                       <CheckCircle2 className="w-5 h-5 text-emerald-500 fill-emerald-100" />
@@ -368,10 +421,14 @@ export default function TimelineManager({
 
                   <div>
                     <div className="flex items-center space-x-2 flex-wrap gap-y-1">
-                      <span className={`text-sm font-semibold ${item.isCompleted ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                      <span
+                        className={`text-sm font-semibold ${item.isCompleted ? 'line-through text-slate-400' : 'text-slate-900'}`}
+                      >
                         {item.title}
                       </span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getPhaseColor(item.phase)}`}>
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getPhaseColor(item.phase)}`}
+                      >
                         {item.phase.replace(/_/g, ' ')}
                       </span>
                       {item.time && (

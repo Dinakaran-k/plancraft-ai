@@ -6,16 +6,50 @@
  */
 
 const ALLOWED_EVENT_TYPES = ['WEDDING', 'BIRTHDAY', 'COMMUNITY', 'OTHER'];
-const ALLOWED_BUDGET_CATEGORIES = ['VENUE', 'CATERING', 'DECOR', 'ENTERTAINMENT', 'MEDIA', 'LOGISTICS', 'CONTINGENCY', 'OTHER'];
-const ALLOWED_TIMELINE_PHASES = ['EARLY_PLANNING', 'MID_PLANNING', 'FINAL_PREP', 'DAY_OF', 'POST_EVENT'];
-const ALLOWED_VENDOR_CATEGORIES = ['VENUE', 'CATERING', 'PHOTOGRAPHY', 'MUSIC', 'FLORIST', 'RENTALS', 'OFFICIANT', 'SECURITY', 'OTHER'];
+const ALLOWED_BUDGET_CATEGORIES = [
+  'VENUE',
+  'CATERING',
+  'DECOR',
+  'ENTERTAINMENT',
+  'MEDIA',
+  'LOGISTICS',
+  'CONTINGENCY',
+  'OTHER'
+];
+const ALLOWED_TIMELINE_PHASES = [
+  'EARLY_PLANNING',
+  'MID_PLANNING',
+  'FINAL_PREP',
+  'DAY_OF',
+  'POST_EVENT'
+];
+const ALLOWED_VENDOR_CATEGORIES = [
+  'VENUE',
+  'CATERING',
+  'PHOTOGRAPHY',
+  'MUSIC',
+  'FLORIST',
+  'RENTALS',
+  'OFFICIANT',
+  'SECURITY',
+  'OTHER'
+];
 const ALLOWED_VENDOR_STATUSES = ['NOT_CONTACTED', 'INQUIRED', 'SHORTLISTED', 'BOOKED', 'CONFIRMED'];
-const ALLOWED_IDEA_CATEGORIES = ['THEME_DECOR', 'FOOD_BEVERAGE', 'ENTERTAINMENT', 'GIFT_FAVOR', 'LOGISTICS'];
+const ALLOWED_IDEA_CATEGORIES = [
+  'THEME_DECOR',
+  'FOOD_BEVERAGE',
+  'ENTERTAINMENT',
+  'GIFT_FAVOR',
+  'LOGISTICS'
+];
 const ALLOWED_COST_TIERS = ['LOW', 'MEDIUM', 'HIGH'];
 
 function sanitizeString(val, maxLen = 255) {
   if (typeof val !== 'string') return '';
-  return val.replace(/<[^>]*>?/gm, '').trim().slice(0, maxLen);
+  return val
+    .replace(/<[^>]*>?/gm, '')
+    .trim()
+    .slice(0, maxLen);
 }
 
 function validateUUID(str) {
@@ -171,7 +205,11 @@ function validateVendorItemInput(data, isUpdate = false) {
   const clean = {};
 
   if (!isUpdate || data.vendorName !== undefined) {
-    if (!data.vendorName || typeof data.vendorName !== 'string' || data.vendorName.trim().length === 0) {
+    if (
+      !data.vendorName ||
+      typeof data.vendorName !== 'string' ||
+      data.vendorName.trim().length === 0
+    ) {
       errors.push('vendorName is required');
     } else {
       clean.vendorName = sanitizeString(data.vendorName, 100);
@@ -203,7 +241,8 @@ function validateVendorItemInput(data, isUpdate = false) {
     else clean.quotedPrice = Math.round(price * 100) / 100;
   }
   if (data.notes !== undefined) clean.notes = sanitizeString(data.notes, 500);
-  if (data.aiScreeningTips !== undefined) clean.aiScreeningTips = sanitizeString(data.aiScreeningTips, 500);
+  if (data.aiScreeningTips !== undefined)
+    clean.aiScreeningTips = sanitizeString(data.aiScreeningTips, 500);
 
   return { isValid: errors.length === 0, errors, data: clean };
 }

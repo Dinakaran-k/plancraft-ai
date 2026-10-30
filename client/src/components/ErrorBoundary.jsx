@@ -34,12 +34,11 @@ export default class ErrorBoundary extends React.Component {
               <AlertTriangle className="w-7 h-7" />
             </div>
 
-            <h1 className="text-xl font-black text-slate-900">
-              Something unexpected occurred
-            </h1>
+            <h1 className="text-xl font-black text-slate-900">Something unexpected occurred</h1>
 
             <p className="text-sm text-slate-500 leading-relaxed">
-              PlanCraft AI encountered an issue rendering this view. Your saved events remain safe in the cloud.
+              PlanCraft AI encountered an issue rendering this view. Your saved events remain safe
+              in the cloud.
             </p>
 
             <button

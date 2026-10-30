@@ -12,9 +12,10 @@ function errorHandler(err, req, res, _next) {
 
   // Safe client response - never leak internal stack traces
   const statusCode = err.statusCode || 500;
-  const message = process.env.NODE_ENV === 'production' && statusCode === 500
-    ? 'An unexpected internal server error occurred.'
-    : err.message || 'Server error';
+  const message =
+    process.env.NODE_ENV === 'production' && statusCode === 500
+      ? 'An unexpected internal server error occurred.'
+      : err.message || 'Server error';
 
   res.status(statusCode).json({ error: message });
 }

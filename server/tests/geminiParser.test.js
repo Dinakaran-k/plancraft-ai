@@ -20,7 +20,8 @@ describe('Gemini Response Parser & Fallback Unit Tests', () => {
   });
 
   test('strips markdown backticks from model output safely', () => {
-    const raw = '```json\n{\n  "aiOverview": "Markdown wrapped plan",\n  "aiThemeConcept": "Theme",\n  "budgetPlan": []\n}\n```';
+    const raw =
+      '```json\n{\n  "aiOverview": "Markdown wrapped plan",\n  "aiThemeConcept": "Theme",\n  "budgetPlan": []\n}\n```';
     const parsed = cleanAndParseJSON(raw);
     expect(parsed.aiOverview).toBe('Markdown wrapped plan');
     expect(parsed.budgetPlan).toEqual([]);

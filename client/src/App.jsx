@@ -39,8 +39,8 @@ export default function App() {
         const target = autoSelectId
           ? list.find((e) => e.id === autoSelectId) || list[0]
           : currentEvent
-          ? list.find((e) => e.id === currentEvent.id) || list[0]
-          : list[0];
+            ? list.find((e) => e.id === currentEvent.id) || list[0]
+            : list[0];
         await selectEvent(target.id);
         setShowWizard(false);
       } else {
@@ -78,10 +78,15 @@ export default function App() {
       setEvents((prev) => [newEvent, ...prev]);
       setCurrentEvent(newEvent);
       setShowWizard(false);
-      setAnnouncement(`Event "${newEvent.name}" generated successfully with budget, timeline, and vendors.`);
+      setAnnouncement(
+        `Event "${newEvent.name}" generated successfully with budget, timeline, and vendors.`
+      );
     } catch (err) {
       console.error('Generation failed:', err);
-      setErrorBanner(err.response?.data?.error || 'Failed to generate event plan. Please check inputs and try again.');
+      setErrorBanner(
+        err.response?.data?.error ||
+          'Failed to generate event plan. Please check inputs and try again.'
+      );
     } finally {
       setIsGenerating(false);
     }
@@ -283,7 +288,8 @@ export default function App() {
             <Sparkles className="w-12 h-12 text-brand-600 mx-auto" />
             <h2 className="text-xl font-bold text-slate-900">No Events Planned Yet</h2>
             <p className="text-sm text-slate-500">
-              Start by creating your first wedding, birthday, or community event with Google Gemini AI.
+              Start by creating your first wedding, birthday, or community event with Google Gemini
+              AI.
             </p>
             <button
               onClick={() => setShowWizard(true)}

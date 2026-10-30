@@ -172,7 +172,10 @@ async function generateEventPlan(req, res, next) {
     res.status(201).json({
       event: { ...fullEvent, summary },
       aiStatus,
-      message: aiStatus === 'SUCCESS' ? 'AI Event Blueprint successfully crafted!' : 'Event created using resilient blueprint templates.'
+      message:
+        aiStatus === 'SUCCESS'
+          ? 'AI Event Blueprint successfully crafted!'
+          : 'Event created using resilient blueprint templates.'
     });
   } catch (err) {
     next(err);

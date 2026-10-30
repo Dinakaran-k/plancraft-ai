@@ -76,7 +76,8 @@ export const eventService = {
    * @param {Object} data
    * @returns {Promise<{ item: Object }>}
    */
-  addBudgetItem: (eventId, data) => api.post(`/budget/events/${eventId}/budget`, data).then((r) => r.data),
+  addBudgetItem: (eventId, data) =>
+    api.post(`/budget/events/${eventId}/budget`, data).then((r) => r.data),
 
   /**
    * Updates an existing budget item quote or status.
@@ -101,7 +102,8 @@ export const eventService = {
    * @param {Object} data
    * @returns {Promise<{ item: Object }>}
    */
-  addTimelineItem: (eventId, data) => api.post(`/timeline/events/${eventId}/timeline`, data).then((r) => r.data),
+  addTimelineItem: (eventId, data) =>
+    api.post(`/timeline/events/${eventId}/timeline`, data).then((r) => r.data),
 
   /**
    * Modifies an existing timeline milestone.
@@ -133,7 +135,8 @@ export const eventService = {
    * @param {Object} data
    * @returns {Promise<{ item: Object }>}
    */
-  addVendorItem: (eventId, data) => api.post(`/vendors/events/${eventId}/vendors`, data).then((r) => r.data),
+  addVendorItem: (eventId, data) =>
+    api.post(`/vendors/events/${eventId}/vendors`, data).then((r) => r.data),
 
   /**
    * Updates vendor details, status, or quotes.
@@ -158,7 +161,8 @@ export const eventService = {
    * @param {string} query
    * @returns {Promise<{ consultation: Object, aiStatus: string }>}
    */
-  consultAi: (eventId, query) => api.post(`/events/${eventId}/ai-consult`, { query }).then((r) => r.data),
+  consultAi: (eventId, query) =>
+    api.post(`/events/${eventId}/ai-consult`, { query }).then((r) => r.data),
 
   /**
    * Generates additional creative ideas tailored to event state.

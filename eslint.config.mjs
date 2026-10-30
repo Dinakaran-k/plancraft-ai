@@ -1,4 +1,6 @@
-// eslint.config.js - Modern ESLint v9/v10 Flat Configuration
+// eslint.config.mjs - Modern ESLint Flat Configuration
+import reactPlugin from 'eslint-plugin-react';
+
 export default [
   {
     ignores: [
@@ -15,6 +17,9 @@ export default [
   },
   {
     files: ['**/*.js', '**/*.jsx', '**/*.mjs'],
+    plugins: {
+      react: reactPlugin
+    },
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
@@ -24,7 +29,15 @@ export default [
         }
       }
     },
+    settings: {
+      react: {
+        version: '18.3'
+      }
+    },
     rules: {
+      'react/jsx-uses-vars': 'error',
+      'react/jsx-uses-react': 'off',
+      'react/react-in-jsx-scope': 'off',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       'no-console': 'off',
       'eqeqeq': ['error', 'always'],

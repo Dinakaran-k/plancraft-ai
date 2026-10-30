@@ -2,11 +2,23 @@ import { useState } from 'react';
 import { Users, Plus, Trash2, Phone, Sparkles, Edit2 } from 'lucide-react';
 
 const STATUSES = [
-  { id: 'NOT_CONTACTED', label: 'Not Contacted', color: 'bg-slate-100 text-slate-700 border-slate-200' },
+  {
+    id: 'NOT_CONTACTED',
+    label: 'Not Contacted',
+    color: 'bg-slate-100 text-slate-700 border-slate-200'
+  },
   { id: 'INQUIRED', label: 'Inquired', color: 'bg-amber-50 text-amber-700 border-amber-200' },
   { id: 'SHORTLISTED', label: 'Shortlisted', color: 'bg-sky-50 text-sky-700 border-sky-200' },
-  { id: 'BOOKED', label: 'Booked', color: 'bg-indigoBrand-50 text-indigoBrand-700 border-indigoBrand-200' },
-  { id: 'CONFIRMED', label: 'Confirmed', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' }
+  {
+    id: 'BOOKED',
+    label: 'Booked',
+    color: 'bg-indigoBrand-50 text-indigoBrand-700 border-indigoBrand-200'
+  },
+  {
+    id: 'CONFIRMED',
+    label: 'Confirmed',
+    color: 'bg-emerald-50 text-emerald-700 border-emerald-200'
+  }
 ];
 
 const VENDOR_CATEGORIES = [
@@ -47,9 +59,8 @@ export default function VendorChecklist({
   const [editNotes, setEditNotes] = useState('');
 
   const items = event.vendorItems || [];
-  const filteredItems = selectedStatus === 'ALL'
-    ? items
-    : items.filter((v) => v.status === selectedStatus);
+  const filteredItems =
+    selectedStatus === 'ALL' ? items : items.filter((v) => v.status === selectedStatus);
 
   const handleCreate = (e) => {
     e.preventDefault();
@@ -147,7 +158,9 @@ export default function VendorChecklist({
               }`}
             >
               <span>{st.label}</span>
-              <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${selectedStatus === st.id ? 'bg-slate-800 text-brand-400' : 'bg-slate-100 text-slate-600'}`}>
+              <span
+                className={`px-1.5 py-0.2 rounded-full text-[10px] ${selectedStatus === st.id ? 'bg-slate-800 text-brand-400' : 'bg-slate-100 text-slate-600'}`}
+              >
                 {count}
               </span>
             </button>
@@ -157,9 +170,17 @@ export default function VendorChecklist({
 
       {/* Add Vendor Form */}
       {isAdding && (
-        <form onSubmit={handleCreate} className="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fadeIn">
+        <form
+          onSubmit={handleCreate}
+          className="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fadeIn"
+        >
           <div className="sm:col-span-2">
-            <label htmlFor="vendor-name" className="block text-xs font-semibold text-slate-600 mb-1">Vendor Role / Name *</label>
+            <label
+              htmlFor="vendor-name"
+              className="block text-xs font-semibold text-slate-600 mb-1"
+            >
+              Vendor Role / Name *
+            </label>
             <input
               id="vendor-name"
               type="text"
@@ -172,7 +193,12 @@ export default function VendorChecklist({
           </div>
 
           <div>
-            <label htmlFor="vendor-category" className="block text-xs font-semibold text-slate-600 mb-1">Category</label>
+            <label
+              htmlFor="vendor-category"
+              className="block text-xs font-semibold text-slate-600 mb-1"
+            >
+              Category
+            </label>
             <select
               id="vendor-category"
               value={category}
@@ -180,13 +206,20 @@ export default function VendorChecklist({
               className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500"
             >
               {VENDOR_CATEGORIES.map((c) => (
-                <option key={c} value={c}>{c}</option>
+                <option key={c} value={c}>
+                  {c}
+                </option>
               ))}
             </select>
           </div>
 
           <div>
-            <label htmlFor="vendor-contact" className="block text-xs font-semibold text-slate-600 mb-1">Contact / Website</label>
+            <label
+              htmlFor="vendor-contact"
+              className="block text-xs font-semibold text-slate-600 mb-1"
+            >
+              Contact / Website
+            </label>
             <input
               id="vendor-contact"
               type="text"
@@ -198,7 +231,12 @@ export default function VendorChecklist({
           </div>
 
           <div>
-            <label htmlFor="vendor-quoted-price" className="block text-xs font-semibold text-slate-600 mb-1">Quoted Price</label>
+            <label
+              htmlFor="vendor-quoted-price"
+              className="block text-xs font-semibold text-slate-600 mb-1"
+            >
+              Quoted Price
+            </label>
             <input
               id="vendor-quoted-price"
               type="number"
@@ -210,7 +248,12 @@ export default function VendorChecklist({
           </div>
 
           <div>
-            <label htmlFor="vendor-notes" className="block text-xs font-semibold text-slate-600 mb-1">Notes</label>
+            <label
+              htmlFor="vendor-notes"
+              className="block text-xs font-semibold text-slate-600 mb-1"
+            >
+              Notes
+            </label>
             <input
               id="vendor-notes"
               type="text"
@@ -247,7 +290,10 @@ export default function VendorChecklist({
 
             if (isEditing) {
               return (
-                <div key={item.id} className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm space-y-3">
+                <div
+                  key={item.id}
+                  className="bg-white p-5 rounded-2xl border border-slate-300 shadow-sm space-y-3"
+                >
                   <div>
                     <label className="text-xs text-slate-500">Name</label>
                     <input
@@ -298,7 +344,10 @@ export default function VendorChecklist({
             }
 
             return (
-              <div key={item.id} className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-4 hover:border-slate-300 transition-all">
+              <div
+                key={item.id}
+                className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-4 hover:border-slate-300 transition-all"
+              >
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <div>
@@ -347,16 +396,16 @@ export default function VendorChecklist({
                     </div>
                   )}
 
-                  {item.notes && (
-                    <p className="text-xs text-slate-500 mt-2">{item.notes}</p>
-                  )}
+                  {item.notes && <p className="text-xs text-slate-500 mt-2">{item.notes}</p>}
                 </div>
 
                 {/* Status and Pricing Footer */}
                 <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                   <div>
                     <span className="text-[11px] text-slate-400 block">Quote</span>
-                    <span className="text-sm font-bold text-slate-900">{formatPrice(item.quotedPrice)}</span>
+                    <span className="text-sm font-bold text-slate-900">
+                      {formatPrice(item.quotedPrice)}
+                    </span>
                   </div>
 
                   {/* Status Dropdown */}

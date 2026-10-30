@@ -25,9 +25,7 @@ describe('API Integration: Session & Authentication Guards', () => {
   });
 
   test('rejects requests with malformed X-Session-Id with 400', async () => {
-    const res = await request(app)
-      .get('/api/events')
-      .set('X-Session-Id', 'not-a-valid-uuid');
+    const res = await request(app).get('/api/events').set('X-Session-Id', 'not-a-valid-uuid');
     expect(res.status).toBe(400);
     expect(res.body.error).toContain('Invalid X-Session-Id');
   });
@@ -77,14 +75,11 @@ describe('API Integration: Events CRUD', () => {
   });
 
   test('validates bad input when creating event', async () => {
-    const res = await request(app)
-      .post('/api/events')
-      .set('X-Session-Id', TEST_SESSION_ID)
-      .send({
-        name: '',
-        eventType: 'INVALID_TYPE',
-        totalBudget: -100
-      });
+    const res = await request(app).post('/api/events').set('X-Session-Id', TEST_SESSION_ID).send({
+      name: '',
+      eventType: 'INVALID_TYPE',
+      totalBudget: -100
+    });
 
     expect(res.status).toBe(400);
     expect(res.body.error).toBeDefined();

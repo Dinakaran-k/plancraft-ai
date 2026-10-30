@@ -5,8 +5,20 @@ import TimelineManager from '../components/TimelineManager';
 describe('TimelineManager Component', () => {
   const mockEvent = {
     timelineItems: [
-      { id: '1', title: 'Sign Catering Contract', phase: 'EARLY_PLANNING', time: '3 Months Out', isCompleted: true },
-      { id: '2', title: 'Vendor Arrival & Sound Check', phase: 'DAY_OF', time: '11:00 AM', isCompleted: false }
+      {
+        id: '1',
+        title: 'Sign Catering Contract',
+        phase: 'EARLY_PLANNING',
+        time: '3 Months Out',
+        isCompleted: true
+      },
+      {
+        id: '2',
+        title: 'Vendor Arrival & Sound Check',
+        phase: 'DAY_OF',
+        time: '11:00 AM',
+        isCompleted: false
+      }
     ]
   };
 

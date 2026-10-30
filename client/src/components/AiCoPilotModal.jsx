@@ -8,13 +8,7 @@ const SUGGESTED_PROMPTS = [
   'What hidden contract fees should we watch out for with the venue?'
 ];
 
-export default function AiCoPilotModal({
-  event,
-  isOpen,
-  onClose,
-  onConsult,
-  isConsulting
-}) {
+export default function AiCoPilotModal({ event, isOpen, onClose, onConsult, isConsulting }) {
   const [query, setQuery] = useState('');
 
   if (!isOpen) return null;
@@ -86,7 +80,10 @@ export default function AiCoPilotModal({
           {consultations.length === 0 ? (
             <div className="text-center py-8 text-slate-400 text-sm">
               <Bot className="w-10 h-10 mx-auto text-slate-300 mb-2 stroke-1" />
-              <p>Ask anything about budget cuts, venue negotiations, weather contingencies, or creative ideas!</p>
+              <p>
+                Ask anything about budget cuts, venue negotiations, weather contingencies, or
+                creative ideas!
+              </p>
             </div>
           ) : (
             consultations.map((item) => (
@@ -123,19 +120,24 @@ export default function AiCoPilotModal({
         </div>
 
         {/* Input Bar */}
-        <form onSubmit={handleSubmit} className="p-4 bg-white border-t border-slate-200 flex items-center space-x-2">
+        <form
+          onSubmit={handleSubmit}
+          className="p-4 bg-white border-t border-slate-200 flex items-center space-x-2"
+        >
           <input
             type="text"
             required
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Ask AI Co-Pilot for advice, tradeoff analysis, or tips..."
+            aria-label="Question or request for AI Co-Pilot"
             className="flex-1 px-4 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigoBrand-500 focus:border-indigoBrand-500 transition-all"
           />
           <button
             type="submit"
             disabled={isConsulting || !query.trim()}
             className="px-4 py-2.5 bg-indigoBrand-600 hover:bg-indigoBrand-700 text-white rounded-xl text-sm font-semibold shadow-sm disabled:opacity-50 transition-all flex items-center space-x-1"
+            aria-label="Send query to AI Co-Pilot"
           >
             <Send className="w-4 h-4" />
           </button>

@@ -18,7 +18,10 @@ export default function Header({
           <div>
             <div className="flex items-center space-x-2">
               <span className="text-xl font-black tracking-tight text-slate-900">
-                PlanCraft <span className="bg-gradient-to-r from-brand-600 to-emerald-500 bg-clip-text text-transparent">AI</span>
+                PlanCraft{' '}
+                <span className="bg-gradient-to-r from-brand-600 to-emerald-500 bg-clip-text text-transparent">
+                  AI
+                </span>
               </span>
               <span className="hidden sm:inline-flex items-center space-x-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80 shadow-xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
@@ -40,7 +43,9 @@ export default function Header({
         <div className="flex items-center space-x-2.5">
           {events.length > 0 && (
             <div className="relative">
-              <label htmlFor="event-select" className="sr-only">Select Active Event</label>
+              <label htmlFor="event-select" className="sr-only">
+                Select Active Event
+              </label>
               <select
                 id="event-select"
                 value={currentEvent?.id || ''}

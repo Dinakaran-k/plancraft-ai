@@ -148,11 +148,7 @@ describe('budgetStatsService Unit Tests', () => {
         { isCompleted: true },
         { isCompleted: false }
       ],
-      vendorItems: [
-        { status: 'BOOKED' },
-        { status: 'INQUIRED' },
-        { status: 'BOOKED' }
-      ]
+      vendorItems: [{ status: 'BOOKED' }, { status: 'INQUIRED' }, { status: 'BOOKED' }]
     };
 
     const summary = computeEventSummary(mockEvent);
